@@ -2,7 +2,7 @@ import os
 
 from univention.listener.handler import ListenerModuleHandler
 
-cache_dir = "/listener"
+cache_dir = "/var/cache/listener"
 
 
 class SelfserviceListener(ListenerModuleHandler):
