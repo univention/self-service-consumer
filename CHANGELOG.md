@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.0.2...v0.1.0) (2023-12-08)
+
+
+### Features
+
+* **listener:** ensure cache volume permissions ([c9a0886](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/c9a088667624c2be8d0985b699c274e8f5446222))
+
 ## [0.0.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.0.1...v0.0.2) (2023-12-07)
 
 
