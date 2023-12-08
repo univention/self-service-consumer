@@ -1,3 +1,4 @@
+#!/bin/bash
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -29,11 +30,13 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-ARG LISTENER_BASE_IMAGE_TAG=0.4.3
-ARG LISTENER_BASE_IMAGE=gitregistry.knut.univention.de/univention/customers/dataport/upx/container-listener-base/listener-base
+set -euxo pipefail
 
-FROM ${LISTENER_BASE_IMAGE}:${LISTENER_BASE_IMAGE_TAG} as final
+cache_dir="/var/cache/listener"
+current_owner="$(stat -c "%U" "${cache_dir}")"
 
-COPY ./docker/selfservice-listener/entrypoint-ensure-volume-permissions.sh /entrypoint.d/25-ensure-volume-permissions.sh
-COPY ./listener/selfservice_listener.py /usr/lib/univention-directory-listener/system/
-
+if [ "${current_owner}" != "listener" ]
+then
+    echo "Trying to adjust owner of directory ${cache_dir}"
+    chown -R listener: "${cache_dir}"
+fi
