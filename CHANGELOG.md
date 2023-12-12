@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.2.0...v0.3.0) (2023-12-12)
+
+
+### Features
+
+* **invitation:** Refactor to enable maximum retries of 5 ([ff5b395](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/ff5b395ef48be93b46cc738d8e08e81ad1d2e011))
+
 ## [0.2.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.1.1...v0.2.0) (2023-12-12)
 
 
