@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.3.2...v0.4.0) (2024-03-26)
+
+
+### Features
+
+* **ci:** add debian update check jobs for scheduled pipeline ([f3419c6](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/f3419c61940b1556c3c033fde88c47cb890284d5))
+
+
+### Bug Fixes
+
+* **ci:** update common-ci from v1.16.1 to v1.25.0 ([05f926a](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/05f926ac6f91572cd258ba304ed21024f904748b))
+* **deps:** add renovate.json ([0f0bdf0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/0f0bdf0b1519905ba1415f855fba1407d4be38a5))
+* **license:** add missing license headers, replace pre-commit licensing hook ([bf0855a](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/bf0855a361413842ea1cbf8f611040f14e75a4d9))
+
 ## [0.3.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.3.1...v0.3.2) (2023-12-21)
 
 
