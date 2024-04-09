@@ -59,35 +59,45 @@ class Invitation():
                 return username
         return None
 
+    def send_email(self, username: str):
+        return requests.post(
+            f"{self.umc_server_url}/command/passwordreset/send_token",
+            json={
+                "options": {
+                    "username": username,
+                    "method": "email",
+                },
+            },
+            auth=(self.umc_admin_user, self.umc_admin_password),
+        )
+
     async def handle_new_user(self, msg: Message):
         self.logger.info("Received the message with the content: %s", msg.body)
-
         username = self.extract_username(msg)
         if username is None:
             return
 
-        self.logger.info("Sending email invitation to user %s" % username)
         try:
-            response = requests.post(
-                f"{self.umc_server_url}/command/passwordreset/send_token",
-                json={
-                    "options": {
-                        "username": username,
-                        "method": "email",
-                    },
-                },
-                auth=(self.umc_admin_user, self.umc_admin_password),
-            )
-            response_data = response.json()
-            if response.status_code != 200:
-                self.logger.error(
-                    "There was an error requesting a user invitation email: %r"
-                    % response_data
-                )
-                # self.evaluate_retry(username) # TODO: implement new retry logic
+            retries = 0
+            while retries < 3:
+                self.logger.info("Sending email invitation to user %s" % username)
+                response = self.send_email(username)
+                response_data = response.json()
+                if response.status_code != 200:
+                    self.logger.error(
+                        "There was an error requesting a user invitation email: %r"
+                        % response_data
+                    )
+                    retries += 1
+                    self.logger.info("Tried sending the invitation email for %s %s times", username, retries)
+                    continue
+                self.logger.info("Email invitation was sent")
+                self.logger.debug(response_data)
                 return
-            self.logger.info("Email invitation was sent")
-            self.logger.debug(response_data)
+
+            self.logger.error("Maximum retries reached for user %s. Check the UMC logs for more information", username)
+            sys.exit(1)
+
         except requests.exceptions.ConnectionError as e:
             self.logger.error("Could not reach UMC server: %r" % e)
 
