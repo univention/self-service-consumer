@@ -23,7 +23,7 @@ class MockedResponse(MagicMock):
     def __init__(self, status, json=None, *args):
         super().__init__(*args)
         self.status = status
-        self.json = MagicMock(return_value=json)
+        self.json = AsyncMock(return_value=json)
 
 
 UID = "testuser"
@@ -96,7 +96,7 @@ class TestInvitation:
             return_value=invitation.handle_new_user(MESSAGE)
         )
 
-        await invitation.start_the_process_of_sending_invitation()
+        await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
             ENV_DEFAULTS["PROVISIONING_USERNAME"],
@@ -122,7 +122,7 @@ class TestInvitation:
             return_value=invitation.handle_new_user(MESSAGE_OLD_USER)
         )
 
-        await invitation.start_the_process_of_sending_invitation()
+        await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
             ENV_DEFAULTS["PROVISIONING_USERNAME"],
@@ -149,7 +149,7 @@ class TestInvitation:
             return_value=invitation.handle_new_user(message)
         )
 
-        await invitation.start_the_process_of_sending_invitation()
+        await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
             ENV_DEFAULTS["PROVISIONING_USERNAME"],
@@ -160,10 +160,10 @@ class TestInvitation:
         message_handler.run.assert_called_once_with()
         mock_post.assert_not_called()
 
-    @patch("invitation.__main__.sys.exit")
+    @patch("invitation.__main__.asyncio.sleep")
     async def test_error_during_sending_email(
         self,
-        mock_sys_exit,
+        mock_sleep,
         mock_post,
         async_client: AsyncClient,
         message_handler: MessageHandler,
@@ -173,8 +173,8 @@ class TestInvitation:
         message_handler.run = AsyncMock(
             return_value=invitation.handle_new_user(MESSAGE)
         )
-
-        await invitation.start_the_process_of_sending_invitation()
+        with pytest.raises(SystemExit, match="1"):
+            await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
             ENV_DEFAULTS["PROVISIONING_USERNAME"],
@@ -184,4 +184,4 @@ class TestInvitation:
         )
         message_handler.run.assert_called_once_with()
         assert mock_post.call_count == 3
-        mock_sys_exit.assert_called_once_with(1)
+        assert mock_sleep.call_count == 2

@@ -68,6 +68,29 @@ class Invitation:
         ) as response:
             return response
 
+    async def retry_or_fail_sending_invitation(
+        self, response_data: dict, username: str, retries: int
+    ):
+        self.logger.error(
+            "There was an error requesting a user invitation email: %r",
+            response_data,
+        )
+        self.logger.info(
+            "Failed sending the invitation email for %s %s times",
+            username,
+            retries,
+        )
+        if retries < self.MAX_RETRIES:
+            await asyncio.sleep(retries)
+            return
+
+        self.logger.error(
+            "Maximum retries reached for user %s. Check the UMC logs for more information",
+            username,
+        )
+        # Crash the process; an unhandled message will be redelivered
+        sys.exit(1)
+
     async def handle_new_user(self, msg: Message) -> None:
         self.logger.info("Received the message with the content: %s", msg.body)
         username = self.extract_username(msg)
@@ -75,39 +98,25 @@ class Invitation:
             return
 
         try:
-            retries = 0
-            while retries < self.MAX_RETRIES:
+            retries = 1
+            while True:
                 self.logger.info("Sending email invitation to user %s", username)
                 response = await self.send_email(username)
-                response_data = response.json()
-                if response.status != 200:
-                    self.logger.error(
-                        "There was an error requesting a user invitation email: %r",
-                        response_data,
-                    )
-                    retries += 1
-                    self.logger.info(
-                        "Failed sending the invitation email for %s %s times",
-                        username,
-                        retries,
-                    )
-                    continue
-                self.logger.info("Email invitation was sent")
-                self.logger.debug(response_data)
-                return
-
-            self.logger.error(
-                "Maximum retries reached for user %s. Check the UMC logs for more information",
-                username,
-            )
-            # Crash the process; an unhandled message will be redelivered
-            sys.exit(1)
+                response_data = await response.json()
+                if response.status == 200:
+                    self.logger.info("Email invitation was sent")
+                    self.logger.debug(response_data)
+                    return
+                await self.retry_or_fail_sending_invitation(
+                    response_data, username, retries
+                )
+                retries += 1
 
         except ClientConnectorError as e:
             self.logger.error("Could not reach UMC server: %r", e)
             raise
 
-    async def start_the_process_of_sending_invitation(self) -> None:
+    async def start_the_process_of_sending_invitations(self) -> None:
         self.logger.info(
             "Starting the process of sending invitation emails via the UMC"
         )
@@ -139,9 +148,9 @@ class Invitation:
             ).run()
 
 
-def run():
+def run() -> None:
     invitation = Invitation()
-    asyncio.run(invitation.start_the_process_of_sending_invitation())
+    asyncio.run(invitation.start_the_process_of_sending_invitations())
 
 
 if __name__ == "__main__":
