@@ -102,8 +102,8 @@ class TestInvitation:
         await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
-            ENV_DEFAULTS["PROVISIONING_USERNAME"],
-            ENV_DEFAULTS["PROVISIONING_PASSWORD"],
+            ENV_DEFAULTS["PROVISIONING_API_USERNAME"],
+            ENV_DEFAULTS["PROVISIONING_API_PASSWORD"],
             [["udm", "users/user"]],
             True,
         )
@@ -128,8 +128,8 @@ class TestInvitation:
         await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
-            ENV_DEFAULTS["PROVISIONING_USERNAME"],
-            ENV_DEFAULTS["PROVISIONING_PASSWORD"],
+            ENV_DEFAULTS["PROVISIONING_API_USERNAME"],
+            ENV_DEFAULTS["PROVISIONING_API_PASSWORD"],
             [["udm", "users/user"]],
             True,
         )
@@ -155,8 +155,8 @@ class TestInvitation:
         await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
-            ENV_DEFAULTS["PROVISIONING_USERNAME"],
-            ENV_DEFAULTS["PROVISIONING_PASSWORD"],
+            ENV_DEFAULTS["PROVISIONING_API_USERNAME"],
+            ENV_DEFAULTS["PROVISIONING_API_PASSWORD"],
             [["udm", "users/user"]],
             True,
         )
@@ -181,8 +181,8 @@ class TestInvitation:
             await invitation.start_the_process_of_sending_invitations()
 
         async_client.create_subscription.assert_called_once_with(
-            ENV_DEFAULTS["PROVISIONING_USERNAME"],
-            ENV_DEFAULTS["PROVISIONING_PASSWORD"],
+            ENV_DEFAULTS["PROVISIONING_API_USERNAME"],
+            ENV_DEFAULTS["PROVISIONING_API_PASSWORD"],
             [["udm", "users/user"]],
             True,
         )

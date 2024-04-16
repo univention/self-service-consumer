@@ -29,8 +29,8 @@ class Invitation:
         self.umc_admin_password = os.environ.get("UMC_ADMIN_PASSWORD")
         self.provisioning_admin_username = os.environ.get("PROVISIONING_ADMIN_USERNAME")
         self.provisioning_admin_password = os.environ.get("PROVISIONING_ADMIN_PASSWORD")
-        self.provisioning_username = os.environ.get("PROVISIONING_USERNAME")
-        self.provisioning_password = os.environ.get("PROVISIONING_PASSWORD")
+        self.provisioning_api_username = os.environ.get("PROVISIONING_API_USERNAME")
+        self.provisioning_api_password = os.environ.get("PROVISIONING_API_PASSWORD")
         self.provisioning_api_base_url = os.environ.get("PROVISIONING_API_BASE_URL")
         self.provisioning_realm_topic = ["udm", "users/user"]
 
@@ -129,8 +129,8 @@ class Invitation:
             provisioning_api_base_url=self.provisioning_api_base_url,
         )
         settings = Settings(
-            provisioning_api_username=self.provisioning_username,
-            provisioning_api_password=self.provisioning_password,
+            provisioning_api_username=self.provisioning_api_username,
+            provisioning_api_password=self.provisioning_api_password,
             provisioning_api_base_url=self.provisioning_api_base_url,
         )
         async with AsyncClient(admin_settings) as admin_client:

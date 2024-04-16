@@ -9,8 +9,8 @@ ENV_DEFAULTS = {
     "UMC_ADMIN_PASSWORD": "adminpassword",
     "PROVISIONING_ADMIN_USERNAME": "admin",
     "PROVISIONING_ADMIN_PASSWORD": "provisioning",
-    "PROVISIONING_USERNAME": "self-service",
-    "PROVISIONING_PASSWORD": "selfservicepassword",
+    "PROVISIONING_API_USERNAME": "self-service",
+    "PROVISIONING_API_PASSWORD": "selfservicepassword",
     "PROVISIONING_API_BASE_URL": "localhost",
 }
 
