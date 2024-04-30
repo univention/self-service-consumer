@@ -26,9 +26,6 @@ class Invitation:
         self.umc_server_url = os.environ.get("UMC_SERVER_URL", "http://umc-server")
         self.umc_admin_user = os.environ.get("UMC_ADMIN_USER", "admin")
         self.umc_admin_password = os.environ.get("UMC_ADMIN_PASSWORD")
-        self.provisioning_api_username = os.environ.get("PROVISIONING_API_USERNAME")
-        self.provisioning_api_password = os.environ.get("PROVISIONING_API_PASSWORD")
-        self.provisioning_api_base_url = os.environ.get("PROVISIONING_API_BASE_URL")
 
     def configure_logging(self) -> None:
         console_handler = logging.StreamHandler(sys.stdout)
@@ -119,14 +116,10 @@ class Invitation:
             "Starting the process of sending invitation emails via the UMC"
         )
 
-        settings = Settings(
-            provisioning_api_username=self.provisioning_api_username,
-            provisioning_api_password=self.provisioning_api_password,
-            provisioning_api_base_url=self.provisioning_api_base_url,
-        )
+        settings = Settings()
 
         self.logger.info("Listening for newly created users")
-        async with AsyncClient(settings) as client:
+        async with AsyncClient() as client:
             await MessageHandler(
                 client, settings.provisioning_api_username, [self.handle_new_user]
             ).run()
