@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.4.0...v0.4.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* Update base image to version 0.12.0 ([d79d194](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/d79d194d137d79a76b42156778294a3cb5123ef1))
+* Update listener base image to version 0.7.0 ([3cc36a2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/3cc36a29cd57857e8889df01e7c73c0f4d7d8029))
+
 ## [0.4.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.3.2...v0.4.0) (2024-03-26)
 
 
