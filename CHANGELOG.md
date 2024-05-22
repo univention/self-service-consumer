@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.5.0...v0.6.0) (2024-05-22)
+
+
+### Features
+
+* changes to support the refactored umbrella values in a nubus deployment ([cf02cb6](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/cf02cb67df469de2a9ca0b350c0353de7281554e))
+
 ## [0.5.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.4.1...v0.5.0) (2024-05-15)
 
 
