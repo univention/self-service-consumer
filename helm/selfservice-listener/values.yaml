@@ -42,7 +42,7 @@ tolerations: []
 # Container image configuration
 image:
   # -- Container registry address. This setting has higher precedence than global.registry.
-  registry: "artifacts.software-univention.de"
+  registry: ""
   # -- The path to the container image.
   repository: "nubus-dev/images/selfservice-invitation"
   # -- The pull policy of the container image.  This setting has higher precedence than global.imagePullPolicy.
