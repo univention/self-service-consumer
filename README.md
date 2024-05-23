@@ -24,4 +24,4 @@ This component watches the shared directory and triggers the UMC command
 
 ![selfservice-listener](docs/images/architecture.png)
 
-![design-considerations](docs/design-considerations.md)
+[design-considerations](docs/design-considerations.md)
