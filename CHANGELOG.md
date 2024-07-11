@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.2...v0.6.3) (2024-07-11)
+
+
+### Bug Fixes
+
+* remove the env | sort from the consumer entrypoints ([18a1938](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/18a1938ae8c7d28933b49022f7ef8065feca7e46))
+
 ## [0.6.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.1...v0.6.2) (2024-05-23)
 
 
