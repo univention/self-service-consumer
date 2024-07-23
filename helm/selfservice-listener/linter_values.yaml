@@ -8,13 +8,23 @@ selfserviceListener:
   caCertFile: "/var/secrets/ca_cert"
   debugLevel: "5"
   ldapBaseDn: "dc=univention,dc=intranet"
-  ldapPassword: "s3cr3t"
-  ldapPasswordFile: "/var/secrets/ldap_secret"
+  ldapSecret: "stub_secret"
+  ldapSecretFile: "/var/secrets/ldap_secret"
+  machineSecret: "stub_secret"
+  machineSecretFile: "/var/secrets/machine_secret"
   ldapHost: "ucs-machine"
   ldapHostDn: "cn=ucs-machine,cn=dc,cn=computers,dc=univention,dc=intranet"
   tlsMode: "unvalidated"
   umcServerUrl: "http://umc-server"
   umcAdminUser: "admin"
-  umcAdminPassword: "stub_password"
+  umcAdminPasswordSecret:
+    name: "selfservice-listener-umc-credentials"
+    key: "UMC_ADMIN_PASSWORD"
+
+
+extraSecrets:
+  - name: selfservice-listener-umc-credentials
+    stringData:
+      UMC_ADMIN_PASSWORD: "stub_password"
 
 ...

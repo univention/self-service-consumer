@@ -67,127 +67,100 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.imagePullPolicy</td>
+			<td>global.imagePullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"Always"
+"IfNotPresent"
 </pre>
 </td>
-			<td></td>
+			<td>Define an ImagePullPolicy.  Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy  "IfNotPresent" => The image is pulled only if it is not already present locally. "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved             digest, and uses that image to launch the container. "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the            kubelet attempts to start the container; otherwise, startup fails.</td>
 		</tr>
 		<tr>
-			<td>image.imagePullSecrets</td>
+			<td>global.imagePullSecrets</td>
 			<td>list</td>
 			<td><pre lang="json">
 []
 </pre>
 </td>
-			<td></td>
+			<td>Credentials to fetch images from private registry. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry"</td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.registry</td>
+			<td>global.imageRegistry</td>
 			<td>string</td>
 			<td><pre lang="json">
-"gitregistry.knut.univention.de"
+"artifacts.software-univention.de"
+</pre>
+</td>
+			<td>Container registry address.</td>
+		</tr>
+		<tr>
+			<td>global.nubusDeployment</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Indicates wether this chart is part of a Nubus deployment.</td>
+		</tr>
+		<tr>
+			<td>ldap.credentialSecret.ldapPasswordKey</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ldap.secret"
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.repository</td>
+			<td>ldap.credentialSecret.name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"univention/customers/dataport/upx/selfservice-listener/selfservice-invitation"
+""
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.sha256</td>
+			<td>ldap.tlsSecret.caCertKey</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Define image sha256 as an alternative to `tag`</td>
-		</tr>
-		<tr>
-			<td>image.selfserviceInvitation.tag</td>
-			<td>string</td>
-			<td><pre lang="json">
-"latest"
+"ca.crt"
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.selfserviceListener.registry</td>
+			<td>ldap.tlsSecret.certificateKey</td>
 			<td>string</td>
 			<td><pre lang="json">
-"gitregistry.knut.univention.de"
+"tls.crt"
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.selfserviceListener.repository</td>
+			<td>ldap.tlsSecret.name</td>
 			<td>string</td>
 			<td><pre lang="json">
-"univention/customers/dataport/upx/selfservice-listener/selfservice-listener"
+""
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.selfserviceListener.sha256</td>
+			<td>ldap.tlsSecret.privateKeyKey</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Define image sha256 as an alternative to `tag`</td>
-		</tr>
-		<tr>
-			<td>image.selfserviceListener.tag</td>
-			<td>string</td>
-			<td><pre lang="json">
-"latest"
+"tls.key"
 </pre>
 </td>
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.waitForDependency.imagePullPolicy</td>
-			<td>string</td>
+			<td>mountSecrets</td>
+			<td>bool</td>
 			<td><pre lang="json">
-"Always"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.registry</td>
-			<td>string</td>
-			<td><pre lang="json">
-"gitregistry.knut.univention.de"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.repository</td>
-			<td>string</td>
-			<td><pre lang="json">
-"univention/components/univention-portal/wait-for-dependency"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.tag</td>
-			<td>string</td>
-			<td><pre lang="json">
-"latest"
+true
 </pre>
 </td>
 			<td></td>
@@ -391,6 +364,42 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>selfserviceInvitation.image.registry</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>selfserviceInvitation.image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"nubus/images/selfservice-invitation"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>selfserviceInvitation.image.sha256</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>Define image sha256 as an alternative to `tag`</td>
+		</tr>
+		<tr>
+			<td>selfserviceInvitation.image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"latest"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>selfserviceListener.caCert</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -436,6 +445,42 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>selfserviceListener.image.registry</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>selfserviceListener.image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"nubus/images/selfservice-listener"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>selfserviceListener.image.sha256</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>Define image sha256 as an alternative to `tag`</td>
+		</tr>
+		<tr>
+			<td>selfserviceListener.image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"latest"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>selfserviceListener.ldapBaseDn</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -448,7 +493,7 @@ null
 			<td>selfserviceListener.ldapHost</td>
 			<td>string</td>
 			<td><pre lang="json">
-"ucs-machine"
+null
 </pre>
 </td>
 			<td></td>
@@ -463,31 +508,22 @@ null
 			<td></td>
 		</tr>
 		<tr>
-			<td>selfserviceListener.ldapPassword</td>
+			<td>selfserviceListener.ldapPort</td>
 			<td>string</td>
 			<td><pre lang="json">
 null
 </pre>
 </td>
-			<td>LDAP password for `cn=admin`. Will be written to "ldapPasswordFile" if set.</td>
+			<td>Will add a mapping from "ldapHost" to "ldapHostIp" into "/etc/hosts" if set</td>
 		</tr>
 		<tr>
-			<td>selfserviceListener.ldapPasswordFile</td>
+			<td>selfserviceListener.ldapSecretFile</td>
 			<td>string</td>
 			<td><pre lang="json">
 "/var/secrets/ldap_secret"
 </pre>
 </td>
-			<td>The path to the "ldapPasswordFile" docker secret or a plain file</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapPort</td>
-			<td>string</td>
-			<td><pre lang="json">
-"389"
-</pre>
-</td>
-			<td>Will add a mapping from "ldapHost" to "ldapHostIp" into "/etc/hosts" if set</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>selfserviceListener.notifierServer</td>
@@ -499,19 +535,37 @@ null
 			<td>Defaults to "ldapHost" if not set.</td>
 		</tr>
 		<tr>
+			<td>selfserviceListener.secretMountPath</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/var/secrets"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>selfserviceListener.tlsMode</td>
 			<td>string</td>
 			<td><pre lang="json">
-"secure"
+"off"
 </pre>
 </td>
 			<td>Whether to start encryption and validate certificates. Chose from "off", "unvalidated" and "secure".</td>
 		</tr>
 		<tr>
-			<td>selfserviceListener.umcAdminPassword</td>
+			<td>selfserviceListener.umcAdminPasswordSecret.key</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>selfserviceListener.umcAdminPasswordSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
 </pre>
 </td>
 			<td></td>
@@ -520,7 +574,7 @@ null
 			<td>selfserviceListener.umcAdminUser</td>
 			<td>string</td>
 			<td><pre lang="json">
-"admin"
+""
 </pre>
 </td>
 			<td></td>
@@ -529,7 +583,7 @@ null
 			<td>selfserviceListener.umcServerUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://umc-server"
+""
 </pre>
 </td>
 			<td></td>
@@ -539,6 +593,33 @@ null
 			<td>list</td>
 			<td><pre lang="json">
 []
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>waitForDependency.image.registry</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>waitForDependency.image.repository</td>
+			<td>string</td>
+			<td><pre lang="json">
+"nubus/images/wait-for-dependency"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>waitForDependency.image.tag</td>
+			<td>string</td>
+			<td><pre lang="json">
+"0.25.0"
 </pre>
 </td>
 			<td></td>

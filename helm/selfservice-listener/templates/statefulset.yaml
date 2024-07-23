@@ -26,7 +26,7 @@ spec:
       labels:
         {{- include "common.labels.matchLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.image.pullSecrets }}
+      {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -36,14 +36,24 @@ spec:
         - name: '{{ .Chart.Name }}'
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: '{{ if .Values.image.selfserviceListener.registry }}{{ .Values.image.selfserviceListener.registry }}/{{ end }}{{ .Values.image.selfserviceListener.repository }}{{ if .Values.image.selfserviceListener.sha256 }}@sha256:{{ .Values.image.selfserviceListener.sha256 }}{{ else }}:{{ .Values.image.selfserviceListener.tag }}{{ end }}'
-          imagePullPolicy: '{{ .Values.image.pullPolicy }}'
+          image: '{{ coalesce .Values.selfserviceListener.image.registry .Values.global.imageRegistry }}/{{ .Values.selfserviceListener.image.repository }}{{ if .Values.selfserviceListener.image.sha256 }}@sha256:{{ .Values.selfserviceListener.image.sha256 }}{{ else }}:{{ .Values.selfserviceListener.image.tag }}{{ end }}'
+          imagePullPolicy: '{{ .Values.global.imagePullPolicy }}'
+          env:
+            - name: "UMC_ADMIN_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ include "selfserviceListener.umcAdminPasswordSecret.name" . }}"
+                  key: "{{ include "selfserviceListener.umcAdminPasswordSecret.key" . }}"
           envFrom:
             - configMapRef:
                 name: '{{ include "common.names.fullname" . }}'
           volumeMounts:
+            {{- if and .Values.mountSecrets (not .Values.global.nubusDeployment) }}
             - name: "secrets"
-              mountPath: "/var/secrets"
+              mountPath: "{{ .Values.selfserviceListener.secretMountPath }}"
+            {{- else }}
+            {{- include "selfserviceListener.secretVolumeMounts" . | nindent 12 }}
+            {{- end }}
             - name: "data"
               mountPath: "/var/lib/univention-directory-listener"
             - name: "shared"
@@ -55,14 +65,18 @@ spec:
           # args: [sleep", "60000"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: '{{ if .Values.image.selfserviceInvitation.registry }}{{ .Values.image.selfserviceInvitation.registry }}/{{ end }}{{ .Values.image.selfserviceInvitation.repository }}{{ if .Values.image.selfserviceInvitation.sha256 }}@sha256:{{ .Values.image.selfserviceInvitation.sha256 }}{{ else }}:{{ .Values.image.selfserviceInvitation.tag }}{{ end }}'
-          imagePullPolicy: '{{ .Values.image.pullPolicy }}'
+          image: '{{ coalesce .Values.selfserviceInvitation.image.registry .Values.global.imageRegistry }}/{{ .Values.selfserviceInvitation.image.repository }}{{ if .Values.selfserviceInvitation.image.sha256 }}@sha256:{{ .Values.selfserviceInvitation.image.sha256 }}{{ else }}:{{ .Values.selfserviceInvitation.image.tag }}{{ end }}'
+          imagePullPolicy: '{{ .Values.global.imagePullPolicy }}'
           envFrom:
             - configMapRef:
                 name: '{{ include "common.names.fullname" . }}'
           volumeMounts:
+            {{- if and .Values.mountSecrets (not .Values.global.nubusDeployment) }}
             - name: "secrets"
-              mountPath: "/var/secrets"
+              mountPath: "{{ .Values.selfserviceListener.secretMountPath }}"
+            {{- else }}
+            {{- include "selfserviceListener.secretVolumeMounts" . | nindent 12 }}
+            {{- end }}
             - name: "shared"
               mountPath: "/var/cache/listener"
           resources:
@@ -70,27 +84,42 @@ spec:
       initContainers:
         - name: wait-for-ldap
           command: ["/bin/bash", "/scripts/wait-for-ldap.sh"]
-          {{ with .Values.image.waitForDependency }}
-          image: "{{ if .registry }}{{ .registry }}/{{ end }}{{ .repository }}{{ if .sha256 }}@sha256:{{ .sha256 }}{{ else }}:{{ .tag }}{{ end }}"
-          imagePullPolicy: {{ .pullPolicy }}
-          {{ end }}
+          image: '{{ coalesce .Values.waitForDependency.image.registry .Values.global.imageRegistry }}/{{ .Values.waitForDependency.image.repository }}{{ if .Values.waitForDependency.image.sha256 }}@sha256:{{ .Values.waitForDependency.image.sha256 }}{{ else }}:{{ .Values.waitForDependency.image.tag }}{{ end }}'
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "common.names.fullname" . }}
           volumeMounts:
+            {{- if and .Values.mountSecrets (not .Values.global.nubusDeployment) }}
             - name: "secrets"
-              mountPath: "/var/secrets"
+              mountPath: "{{ .Values.selfserviceListener.secretMountPath }}"
+            {{- else }}
+            {{- include "selfserviceListener.secretVolumeMounts" . | nindent 12 }}
+            {{- end }}
             - name: "wait-for-ldap"
               mountPath: "/scripts"
           resources:
             {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
       volumes:
-      - name: "secrets"
-        secret:
-          secretName: {{ include "common.names.fullname" . | quote }}
-      - name: wait-for-ldap
-        configMap:
-          name: {{ include "common.names.fullname" . }}
+        {{- if and .Values.mountSecrets (not .Values.global.nubusDeployment) }}
+        - name: "secrets"
+          secret:
+            secretName: {{ include "common.names.fullname" . | quote }}
+        {{- else }}
+        {{- if (include "selfserviceListener.ldap.credentialSecret.name" . ) }}
+        - name: {{ printf "%s-volume" (include "selfserviceListener.ldap.credentialSecret.name" . ) | quote }}
+          secret:
+            secretName: {{ (include "selfserviceListener.ldap.credentialSecret.name" . ) | quote }}
+        {{- end }}
+        {{- if (include "selfserviceListener.ldap.tlsSecret.name" . ) }}
+        - name: {{ printf "%s-volume" (include "selfserviceListener.ldap.tlsSecret.name" . ) | quote }}
+          secret:
+            secretName: {{ (include "selfserviceListener.ldap.tlsSecret.name" . ) | quote }}
+        {{- end }}
+        {{- end }}
+        - name: wait-for-ldap
+          configMap:
+            name: {{ include "common.names.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

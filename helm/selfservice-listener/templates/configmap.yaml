@@ -5,23 +5,21 @@
 {{ include "common.configMap" (dict "top" . "overrides" "selfservice-listener.configMap") }}
 
 {{- define "selfservice-listener.configMap" }}
-{{- with .top.Values.selfserviceListener }}
+{{- with .top }}
 data:
-  CA_CERT: "{{ .caCert }}"
-  CA_CERT_FILE: "{{ .caCertFile }}"
-  DEBUG_LEVEL: "{{ .debugLevel }}"
-  ENVIRONMENT: "{{ .environment }}"
-  LDAP_BASE_DN: "{{ .ldapBaseDn }}"
-  LDAP_PASSWORD: "{{ .ldapPassword }}"
-  LDAP_PASSWORD_FILE: "{{ .ldapPasswordFile }}"
-  LDAP_HOST: "{{ .ldapHost }}"
-  LDAP_HOST_DN: "{{ .ldapHostDn }}"
-  LDAP_PORT: "{{ .ldapPort }}"
-  NOTIFIER_SERVER: "{{ default .ldapHost .notifierServer }}"
-  TLS_MODE: "{{ .tlsMode }}"
-  UMC_SERVER_URL: "{{ .umcServerUrl }}"
-  UMC_ADMIN_USER: "{{ .umcAdminUser }}"
-  UMC_ADMIN_PASSWORD: "{{ .umcAdminPassword }}"
+  DEBUG_LEVEL: "{{ .Values.selfserviceListener.debugLevel }}"
+  ENVIRONMENT: "{{ .Values.selfserviceListener.environment }}"
+  LDAP_BASE_DN: {{ include "selfserviceListener.ldapBaseDn" . | quote }}
+  LDAP_PASSWORD_FILE: "{{ .Values.selfserviceListener.ldapSecretFile }}"
+  LDAP_HOST: {{ include "selfserviceListener.ldap.connection.host" . | quote}}
+  LDAP_HOST_DN: {{ include "selfserviceListener.ldapAdminDn" . | quote }}
+  LDAP_PORT: {{ include "selfserviceListener.ldap.connection.port" . | quote }}
+  NOTIFIER_SERVER: {{ include "selfserviceListener.notifierServer" . | quote }}
+  CA_CERT: "{{ .Values.selfserviceListener.caCert }}"
+  CA_CERT_FILE: "{{ .Values.selfserviceListener.caCertFile }}"
+  TLS_MODE: "{{ .Values.selfserviceListener.tlsMode }}"
+  UMC_SERVER_URL: {{ include "selfserviceLister.umcServerUrl" . | quote }}
+  UMC_ADMIN_USER: "{{ .Values.selfserviceListener.umcAdminUser }}"
   wait-for-ldap.sh: |
     #!/bin/bash
     set -euxo pipefail

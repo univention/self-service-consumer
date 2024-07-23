@@ -3,6 +3,32 @@
 
 ---
 
+# The global properties are used to configure multiple charts at once.
+global:
+  # -- Indicates wether this chart is part of a Nubus deployment.
+  nubusDeployment: false
+  # -- Container registry address.
+  imageRegistry: "artifacts.software-univention.de"
+  # -- Credentials to fetch images from private registry.
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  #
+  # imagePullSecrets:
+  #   - "docker-registry"
+  imagePullSecrets: []
+
+  # -- Define an ImagePullPolicy.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  #
+  # "IfNotPresent" => The image is pulled only if it is not already present locally.
+  # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
+  #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
+  #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
+  #             digest, and uses that image to launch the container.
+  # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
+  #            kubelet attempts to start the container; otherwise, startup fails.
+  imagePullPolicy: "IfNotPresent"
+
 ## Global values
 affinity: {}
 environment: {}
@@ -14,8 +40,17 @@ podSecurityContext: {}
 replicaCount: 1
 securityContext: {}
 tolerations: []
+mountSecrets: true
 
 selfserviceListener:
+
+  image:
+    registry: ""
+    repository: "nubus/images/selfservice-listener"
+    tag: "latest"
+    # -- Define image sha256 as an alternative to `tag`
+    sha256: null
+
   environment: "production"
   # -- CA root certificate, base64-encoded. Optional; will be written to "caCertFile" if set.
   caCert: ""
@@ -24,48 +59,38 @@ selfserviceListener:
   certPem: ""
   debugLevel: "4"
   ldapBaseDn: null
-  # -- LDAP password for `cn=admin`. Will be written to "ldapPasswordFile" if set.
-  ldapPassword: null
-  # -- The path to the "ldapPasswordFile" docker secret or a plain file
-  ldapPasswordFile: "/var/secrets/ldap_secret"
-  ldapHost: "ucs-machine"
+  ldapSecretFile: "/var/secrets/ldap_secret"
+  ldapHost: null
   ldapHostDn: null
   # -- Will add a mapping from "ldapHost" to "ldapHostIp" into "/etc/hosts" if set
-  ldapPort: "389"
+  ldapPort: null
   # -- Defaults to "ldapHost" if not set.
   notifierServer: null
   # -- Whether to start encryption and validate certificates.
   # Chose from "off", "unvalidated" and "secure".
-  tlsMode: "secure"
+  tlsMode: "off"
 
-  umcServerUrl: "http://umc-server"
-  umcAdminUser: "admin"
-  umcAdminPassword: null
+  umcServerUrl: ""
+  umcAdminUser: ""
+  secretMountPath: "/var/secrets"
+  umcAdminPasswordSecret:
+    name: ""
+    key: ""
 
-image:
-  imagePullPolicy: "Always"
-  imagePullSecrets: []
-
-  selfserviceListener:
-    registry: "gitregistry.knut.univention.de"
-    repository: "univention/customers/dataport/upx/selfservice-listener/selfservice-listener"
-    tag: "latest"
-    # -- Define image sha256 as an alternative to `tag`
-    sha256: null
-
-  selfserviceInvitation:
-    registry: "gitregistry.knut.univention.de"
-    repository: "univention/customers/dataport/upx/selfservice-listener/selfservice-invitation"
+selfserviceInvitation:
+  image:
+    registry: ""
+    repository: "nubus/images/selfservice-invitation"
     tag: "latest"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
 
-  waitForDependency:
-    registry: "gitregistry.knut.univention.de"
-    repository: "univention/components/univention-portal/wait-for-dependency"
-    imagePullPolicy: "Always"
-    tag: "latest"
+waitForDependency:
+  image:
+    registry: ""
+    repository: "nubus/images/wait-for-dependency"
+    tag: "0.25.0"
     ## Define image sha256 as an alternative to `tag`
     # sha256:
 
@@ -109,4 +134,13 @@ persistence:
     storageClass: ""
     size: "1Gi"
 
+ldap:
+  tlsSecret:
+    name: ""
+    caCertKey: "ca.crt"
+    privateKeyKey: "tls.key"
+    certificateKey: "tls.crt"
+  credentialSecret:
+    name: ""
+    ldapPasswordKey: "ldap.secret"
 ...
