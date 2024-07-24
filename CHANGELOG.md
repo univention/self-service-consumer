@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.4](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.3...v0.6.4) (2024-07-24)
+
+
+### Bug Fixes
+
+* secret handling and nubus umbrella integration ([7547032](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/75470323e01158056d79826b684b891019eec926))
+
+
+### Reverts
+
+* provisioning to listener/notifier ([9f4f81d](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/9f4f81dd9d442627c38548a2186c0cbf71cfd8ce))
+
 ## [0.4.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.4.0...v0.4.1) (2024-05-07)
 
 
