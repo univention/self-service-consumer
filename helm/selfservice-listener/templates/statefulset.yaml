@@ -33,7 +33,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: '{{ .Chart.Name }}'
+        - name: 'selfservice-listener'
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: '{{ coalesce .Values.selfserviceListener.image.registry .Values.global.imageRegistry }}/{{ .Values.selfserviceListener.image.repository }}{{ if .Values.selfserviceListener.image.sha256 }}@sha256:{{ .Values.selfserviceListener.image.sha256 }}{{ else }}:{{ .Values.selfserviceListener.image.tag }}{{ end }}'
@@ -60,7 +60,7 @@ spec:
               mountPath: "/var/cache/listener"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: '{{ .Chart.Name }}-invitation'
+        - name: 'selfservice-listener-invitation'
           # command: ["/bin/bash"]
           # args: [sleep", "60000"]
           securityContext:
