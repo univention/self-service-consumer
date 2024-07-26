@@ -23,6 +23,58 @@
 
 * provisioning to listener/notifier ([9f4f81d](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/9f4f81dd9d442627c38548a2186c0cbf71cfd8ce))
 
+## [0.6.3](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.2...v0.6.3) (2024-07-11)
+
+
+### Bug Fixes
+
+* remove the env | sort from the consumer entrypoints ([18a1938](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/18a1938ae8c7d28933b49022f7ef8065feca7e46))
+
+## [0.6.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.1...v0.6.2) (2024-05-23)
+
+
+### Bug Fixes
+
+* use global registry ([dd5b08a](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/dd5b08a656045abab315958a44bc63ba5a016322))
+
+## [0.6.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.0...v0.6.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* README ([52f2819](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/52f281938393619772dcf6c58dc13739c28eeffc))
+
+## [0.6.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.5.0...v0.6.0) (2024-05-22)
+
+
+### Features
+
+* changes to support the refactored umbrella values in a nubus deployment ([cf02cb6](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/cf02cb67df469de2a9ca0b350c0353de7281554e))
+
+## [0.5.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.4.1...v0.5.0) (2024-05-15)
+
+
+### Features
+
+* implement new retry logic ([31ba1eb](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/31ba1eb5a4dd3cd8c9b9cd49670b31de513cc29e))
+* run tests in the pipeline, add timeout to the ClientSession, fix tests ([a908b2e](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/a908b2ec0d10ee239e911e6ff804536313c57273))
+* update helm chart to use only selfservice invitation, add new filters for incoming messages, remove listener ([8cbe361](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/8cbe36166ab17c797f8b0af03c157009f79d146d))
+* use provisioning-consumer-lib to listen for newly created users ([d0565a7](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/d0565a7286ccaad1036ce013a18bc7db683adc34))
+
+
+### Bug Fixes
+
+* add license headers to the test file and fix helm README ([d255fe8](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/d255fe8f3cf15282fba904e9f8ad36d2ebff1d72))
+* add pyproject.toml, refactor selfservice invitation Dockerfile, add pre-commit hooks, remove selfservice-listener from the gitlab-ci ([c28dd42](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/c28dd424575a7d8d419d8cc14630794e69252a02))
+* add sleep intervals between retries when sending emails, fix test ([035c8c8](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/035c8c8042ab80361566c2f19180973c47bba96e))
+* change fields for filtering messages ([9f2a292](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/9f2a29256d6ac4b08e8d3a7a015799a2d372941a))
+* do not register consumer, update provisioning lib ([e59b502](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/e59b502fc5d46b52f75cf6a3f8537dd6ed92c75a))
+* let pydantic_settings read the env values and AsyncClient instantiate the Settings class ([7f5f45e](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/7f5f45e295c2b5d559afbe5da4b6174a5fa1aaa6))
+* rename provisioning credentials ([8d177a8](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/8d177a857123039e5577ab4142601f79b0add86c))
+* replace the synchronous 'requests' with aiohttp, add constant for MAX_RETRIES ([4ae602c](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/4ae602c153ce8a7525163c6d71d032a4a696c3bb))
+* use a single 'with' statement with multiple contexts for sending emails, add annotations, fix UMC server error handling ([7166cd1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/7166cd1c291916572ecdaddbc3e719b4b7270c36))
+* use exponential back-off for retry ([6ca86bb](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/6ca86bb846bd9e2c743c088a407cdeb3bf1c82bb))
+
 ## [0.4.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.4.0...v0.4.1) (2024-05-07)
 
 

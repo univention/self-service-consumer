@@ -18,7 +18,7 @@ user an email to set their password.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://gitregistry.knut.univention.de/univention/customers/dataport/upx/common-helm/helm | common | ^0.3.0 |
+| oci://gitregistry.knut.univention.de/univention/customers/dataport/upx/common-helm/helm | common | ^0.2.0 |
 
 ## Values
 
@@ -40,13 +40,80 @@ user an email to set their password.
 			<td></td>
 		</tr>
 		<tr>
-			<td>autoscaling.enabled</td>
+			<td>containerSecurityContext.allowPrivilegeEscalation</td>
 			<td>bool</td>
 			<td><pre lang="json">
 false
 </pre>
 </td>
-			<td></td>
+			<td>Enable container privileged escalation.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.capabilities</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "drop": [
+    "ALL"
+  ]
+}
+</pre>
+</td>
+			<td>Security capabilities for container.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable security context.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.readOnlyRootFilesystem</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Mounts the container's root filesystem as read-only.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td>Process group id.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Run container as a user.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td>Process user id.</td>
+		</tr>
+		<tr>
+			<td>containerSecurityContext.seccompProfile.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+"RuntimeDefault"
+</pre>
+</td>
+			<td>Disallow custom Seccomp profile by setting it to RuntimeDefault.</td>
 		</tr>
 		<tr>
 			<td>environment</td>
@@ -58,6 +125,24 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Optionally specify a secret to create (primarily intended to be used in development environments to provide custom certificates)</td>
+		</tr>
+		<tr>
+			<td>extraSecrets</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Optionally specify a secret to create (primarily intended to be used in development environments to provide custom certificates)</td>
+		</tr>
+		<tr>
 			<td>fullnameOverride</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -67,130 +152,76 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td>image.imagePullPolicy</td>
+			<td>global.imagePullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"Always"
+"IfNotPresent"
 </pre>
 </td>
-			<td></td>
+			<td>Define an ImagePullPolicy.  Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy  "IfNotPresent" => The image is pulled only if it is not already present locally. "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved             digest, and uses that image to launch the container. "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the            kubelet attempts to start the container; otherwise, startup fails.</td>
 		</tr>
 		<tr>
-			<td>image.imagePullSecrets</td>
+			<td>global.imagePullSecrets</td>
 			<td>list</td>
 			<td><pre lang="json">
 []
 </pre>
 </td>
-			<td></td>
+			<td>Credentials to fetch images from private registry Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry" </td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.registry</td>
+			<td>global.imageRegistry</td>
 			<td>string</td>
 			<td><pre lang="json">
-"gitregistry.knut.univention.de"
+"artifacts.software-univention.de"
 </pre>
 </td>
-			<td></td>
+			<td>Container registry address.</td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.repository</td>
+			<td>global.nubusDeployment</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Indicates wether this chart is part of a Nubus deployment.</td>
+		</tr>
+		<tr>
+			<td>image.imagePullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"univention/customers/dataport/upx/selfservice-listener/selfservice-invitation"
+"IfNotPresent"
 </pre>
 </td>
-			<td></td>
+			<td>The pull policy of the container image.  This setting has higher precedence than global.imagePullPolicy.</td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.sha256</td>
+			<td>image.registry</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
+""
 </pre>
 </td>
-			<td>Define image sha256 as an alternative to `tag`</td>
+			<td>Container registry address. This setting has higher precedence than global.registry.</td>
 		</tr>
 		<tr>
-			<td>image.selfserviceInvitation.tag</td>
+			<td>image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"latest"
+"nubus-dev/images/selfservice-invitation"
 </pre>
 </td>
-			<td></td>
+			<td>The path to the container image.</td>
 		</tr>
 		<tr>
-			<td>image.selfserviceListener.registry</td>
-			<td>string</td>
-			<td><pre lang="json">
-"gitregistry.knut.univention.de"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.selfserviceListener.repository</td>
-			<td>string</td>
-			<td><pre lang="json">
-"univention/customers/dataport/upx/selfservice-listener/selfservice-listener"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.selfserviceListener.sha256</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Define image sha256 as an alternative to `tag`</td>
-		</tr>
-		<tr>
-			<td>image.selfserviceListener.tag</td>
+			<td>image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
 "latest"
 </pre>
 </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.imagePullPolicy</td>
-			<td>string</td>
-			<td><pre lang="json">
-"Always"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.registry</td>
-			<td>string</td>
-			<td><pre lang="json">
-"gitregistry.knut.univention.de"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.repository</td>
-			<td>string</td>
-			<td><pre lang="json">
-"univention/components/univention-portal/wait-for-dependency"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>image.waitForDependency.tag</td>
-			<td>string</td>
-			<td><pre lang="json">
-"latest"
-</pre>
-</td>
-			<td></td>
+			<td>The tag of the container image. (This is replaced with an appropriate value during the build process of the Helm chart.)</td>
 		</tr>
 		<tr>
 			<td>nameOverride</td>
@@ -206,24 +237,6 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {}
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>persistence.data.size</td>
-			<td>string</td>
-			<td><pre lang="json">
-"1Gi"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>persistence.data.storageClass</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
 </pre>
 </td>
 			<td></td>
@@ -247,112 +260,88 @@ null
 			<td></td>
 		</tr>
 		<tr>
-			<td>probes.liveness.enabled</td>
-			<td>bool</td>
+			<td>provisioningApi.auth</td>
+			<td>object</td>
 			<td><pre lang="json">
-true
+{
+  "credentialSecret": {
+    "key": "PROVISIONING_API_PASSWORD",
+    "name": ""
+  },
+  "password": "",
+  "username": "selfservice"
+}
 </pre>
 </td>
-			<td></td>
+			<td>Authentication parameters</td>
 		</tr>
 		<tr>
-			<td>probes.liveness.failureThreshold</td>
-			<td>int</td>
+			<td>provisioningApi.auth.credentialSecret</td>
+			<td>object</td>
 			<td><pre lang="json">
-3
+{
+  "key": "PROVISIONING_API_PASSWORD",
+  "name": ""
+}
 </pre>
 </td>
-			<td></td>
+			<td>The name of the secret containing the password.</td>
 		</tr>
 		<tr>
-			<td>probes.liveness.initialDelaySeconds</td>
-			<td>int</td>
+			<td>provisioningApi.auth.credentialSecret.key</td>
+			<td>string</td>
 			<td><pre lang="json">
-120
+"PROVISIONING_API_PASSWORD"
 </pre>
 </td>
-			<td></td>
+			<td>The key where the password can be found.</td>
 		</tr>
 		<tr>
-			<td>probes.liveness.periodSeconds</td>
-			<td>int</td>
+			<td>provisioningApi.auth.credentialSecret.name</td>
+			<td>string</td>
 			<td><pre lang="json">
-30
+""
 </pre>
 </td>
-			<td></td>
+			<td>The name of the secret.</td>
 		</tr>
 		<tr>
-			<td>probes.liveness.successThreshold</td>
-			<td>int</td>
+			<td>provisioningApi.auth.password</td>
+			<td>string</td>
 			<td><pre lang="json">
-1
+""
 </pre>
 </td>
-			<td></td>
+			<td>The password to authenticate with.</td>
 		</tr>
 		<tr>
-			<td>probes.liveness.timeoutSeconds</td>
-			<td>int</td>
+			<td>provisioningApi.auth.username</td>
+			<td>string</td>
 			<td><pre lang="json">
-3
+"selfservice"
 </pre>
 </td>
-			<td></td>
+			<td>The username to authenticate with.</td>
 		</tr>
 		<tr>
-			<td>probes.readiness.enabled</td>
-			<td>bool</td>
+			<td>provisioningApi.connection</td>
+			<td>object</td>
 			<td><pre lang="json">
-true
+{
+  "baseUrl": ""
+}
 </pre>
 </td>
-			<td></td>
+			<td>Connection parameters</td>
 		</tr>
 		<tr>
-			<td>probes.readiness.failureThreshold</td>
-			<td>int</td>
+			<td>provisioningApi.connection.baseUrl</td>
+			<td>string</td>
 			<td><pre lang="json">
-30
+""
 </pre>
 </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>probes.readiness.initialDelaySeconds</td>
-			<td>int</td>
-			<td><pre lang="json">
-30
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>probes.readiness.periodSeconds</td>
-			<td>int</td>
-			<td><pre lang="json">
-15
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>probes.readiness.successThreshold</td>
-			<td>int</td>
-			<td><pre lang="json">
-1
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>probes.readiness.timeoutSeconds</td>
-			<td>int</td>
-			<td><pre lang="json">
-3
-</pre>
-</td>
-			<td></td>
+			<td>The base URL the provisioning API is reachable at. (e.g. "https://provisioning-api")</td>
 		</tr>
 		<tr>
 			<td>replicaCount</td>
@@ -364,24 +353,6 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>resources</td>
-			<td>object</td>
-			<td><pre lang="json">
-{}
-</pre>
-</td>
-			<td>Deployment resources for the listener container</td>
-		</tr>
-		<tr>
-			<td>resourcesWaitForDependency</td>
-			<td>object</td>
-			<td><pre lang="json">
-{}
-</pre>
-</td>
-			<td>Deployment resources for the dependency waiters</td>
-		</tr>
-		<tr>
 			<td>securityContext</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -391,145 +362,46 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>selfserviceListener.caCert</td>
+			<td>serviceAccount.annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.automountServiceAccountToken</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.create</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>serviceAccount.labels</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Additional custom labels for the ServiceAccount.</td>
+		</tr>
+		<tr>
+			<td>serviceAccount.name</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
-</pre>
-</td>
-			<td>CA root certificate, base64-encoded. Optional; will be written to "caCertFile" if set.</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.caCertFile</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/run/secrets/ca_cert"
-</pre>
-</td>
-			<td>Where to search for the CA Certificate file.</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.certPem</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.debugLevel</td>
-			<td>string</td>
-			<td><pre lang="json">
-"4"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.environment</td>
-			<td>string</td>
-			<td><pre lang="json">
-"production"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapBaseDn</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapHost</td>
-			<td>string</td>
-			<td><pre lang="json">
-"ucs-machine"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapHostDn</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapPassword</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>LDAP password for `cn=admin`. Will be written to "ldapPasswordFile" if set.</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapPasswordFile</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/var/secrets/ldap_secret"
-</pre>
-</td>
-			<td>The path to the "ldapPasswordFile" docker secret or a plain file</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.ldapPort</td>
-			<td>string</td>
-			<td><pre lang="json">
-"389"
-</pre>
-</td>
-			<td>Will add a mapping from "ldapHost" to "ldapHostIp" into "/etc/hosts" if set</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.notifierServer</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Defaults to "ldapHost" if not set.</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.tlsMode</td>
-			<td>string</td>
-			<td><pre lang="json">
-"secure"
-</pre>
-</td>
-			<td>Whether to start encryption and validate certificates. Chose from "off", "unvalidated" and "secure".</td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.umcAdminPassword</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.umcAdminUser</td>
-			<td>string</td>
-			<td><pre lang="json">
-"admin"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>selfserviceListener.umcServerUrl</td>
-			<td>string</td>
-			<td><pre lang="json">
-"http://umc-server"
 </pre>
 </td>
 			<td></td>
@@ -542,6 +414,90 @@ null
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>umc.auth</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "credentialSecret": {
+    "key": "UMC_ADMIN_PASSWORD",
+    "name": ""
+  },
+  "password": "",
+  "username": "Administrator"
+}
+</pre>
+</td>
+			<td>Authentication parameters</td>
+		</tr>
+		<tr>
+			<td>umc.auth.credentialSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "key": "UMC_ADMIN_PASSWORD",
+  "name": ""
+}
+</pre>
+</td>
+			<td>The name of the secret containing the password.</td>
+		</tr>
+		<tr>
+			<td>umc.auth.credentialSecret.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+"UMC_ADMIN_PASSWORD"
+</pre>
+</td>
+			<td>The key where the password can be found.</td>
+		</tr>
+		<tr>
+			<td>umc.auth.credentialSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The name of the secret.</td>
+		</tr>
+		<tr>
+			<td>umc.auth.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The password to authenticate with.</td>
+		</tr>
+		<tr>
+			<td>umc.auth.username</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Administrator"
+</pre>
+</td>
+			<td>The username to authenticate with.</td>
+		</tr>
+		<tr>
+			<td>umc.connection</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "baseUrl": ""
+}
+</pre>
+</td>
+			<td>Connection parameters</td>
+		</tr>
+		<tr>
+			<td>umc.connection.baseUrl</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The base URL the UMC is reachable at. (e.g. "https://umc-server")</td>
 		</tr>
 	</tbody>
 </table>

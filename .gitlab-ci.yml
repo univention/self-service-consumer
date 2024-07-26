@@ -18,10 +18,6 @@ include:
 
 .build-matrix: &build-matrix
   - IMAGE_NAME:
-      - "selfservice-listener"
-    KANIKO_BUILD_CONTEXT: $CI_PROJECT_DIR
-    DOCKERFILE_PATH: "docker/selfservice-listener/Dockerfile"
-  - IMAGE_NAME:
       - "selfservice-invitation"
     KANIKO_BUILD_CONTEXT: $CI_PROJECT_DIR
     DOCKERFILE_PATH: "docker/selfservice-invitation/Dockerfile"

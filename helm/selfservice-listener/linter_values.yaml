@@ -2,19 +2,15 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
 ---
-
-selfserviceListener:
-  caCert: "stub_value"
-  caCertFile: "/var/secrets/ca_cert"
-  debugLevel: "5"
-  ldapBaseDn: "dc=univention,dc=intranet"
-  ldapPassword: "s3cr3t"
-  ldapPasswordFile: "/var/secrets/ldap_secret"
-  ldapHost: "ucs-machine"
-  ldapHostDn: "cn=ucs-machine,cn=dc,cn=computers,dc=univention,dc=intranet"
-  tlsMode: "unvalidated"
-  umcServerUrl: "http://umc-server"
-  umcAdminUser: "admin"
-  umcAdminPassword: "stub_password"
-
-...
+api:
+  auth:
+    password: "password"
+    username: "username"
+  connection:
+    baseUrl: "http://test-provisioning-api"
+umc:
+  auth:
+    password: "password"
+    username: "username"
+  connection:
+    baseUrl: "http://test-umc-server"

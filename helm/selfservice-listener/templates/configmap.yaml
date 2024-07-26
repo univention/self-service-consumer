@@ -2,36 +2,22 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
 ---
-{{ include "common.configMap" (dict "top" . "overrides" "selfservice-listener.configMap") }}
-
-{{- define "selfservice-listener.configMap" }}
-{{- with .top.Values.selfserviceListener }}
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
 data:
-  CA_CERT: "{{ .caCert }}"
-  CA_CERT_FILE: "{{ .caCertFile }}"
-  DEBUG_LEVEL: "{{ .debugLevel }}"
-  ENVIRONMENT: "{{ .environment }}"
-  LDAP_BASE_DN: "{{ .ldapBaseDn }}"
-  LDAP_PASSWORD: "{{ .ldapPassword }}"
-  LDAP_PASSWORD_FILE: "{{ .ldapPasswordFile }}"
-  LDAP_HOST: "{{ .ldapHost }}"
-  LDAP_HOST_DN: "{{ .ldapHostDn }}"
-  LDAP_PORT: "{{ .ldapPort }}"
-  NOTIFIER_SERVER: "{{ default .ldapHost .notifierServer }}"
-  TLS_MODE: "{{ .tlsMode }}"
-  UMC_SERVER_URL: "{{ .umcServerUrl }}"
-  UMC_ADMIN_USER: "{{ .umcAdminUser }}"
-  UMC_ADMIN_PASSWORD: "{{ .umcAdminPassword }}"
-  wait-for-ldap.sh: |
-    #!/bin/bash
-    set -euxo pipefail
-
-    while ! ldapsearch -H ldap://$LDAP_HOST -D $LDAP_HOST_DN -y $LDAP_PASSWORD_FILE -b "" -s base -LLL; do
-      echo "Checking if LDAP Server can be reached..."
-      sleep 2
-    done
-
-    echo "Success, the LDAP Server is available"
-{{ end }}
-{{ end }}
+  PROVISIONING_API_BASE_URL: {{ include "selfservice-listener.provisioningApi.connection.baseUrl" . | quote }}
+  UMC_SERVER_URL: {{ include "selfservice-listener.umc.connection.baseUrl" . | quote }}
+  UMC_ADMIN_USER: {{ include "selfservice-listener.umc.auth.username" . | quote }}
+  PROVISIONING_API_USERNAME: {{ include "selfservice-listener.provisioningApi.auth.username" . | quote }}
 ...
