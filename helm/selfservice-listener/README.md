@@ -362,6 +362,24 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>selfserviceListener.config.logLevel</td>
+			<td>string</td>
+			<td><pre lang="json">
+"INFO"
+</pre>
+</td>
+			<td>Log level for the selfservice listener. valid values are: ERROR WARNING, INFO, DEBUG</td>
+		</tr>
+		<tr>
+			<td>selfserviceListener.config.maxUmcRequestRetries</td>
+			<td>int</td>
+			<td><pre lang="json">
+5
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>serviceAccount.annotations</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -425,7 +443,7 @@ true
     "name": ""
   },
   "password": "",
-  "username": "Administrator"
+  "username": "cn=admin"
 }
 </pre>
 </td>
@@ -474,7 +492,7 @@ true
 			<td>umc.auth.username</td>
 			<td>string</td>
 			<td><pre lang="json">
-"Administrator"
+"cn=admin"
 </pre>
 </td>
 			<td>The username to authenticate with.</td>

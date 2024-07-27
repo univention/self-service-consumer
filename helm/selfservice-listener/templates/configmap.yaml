@@ -16,6 +16,8 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
   {{- end }}
 data:
+  LOG_LEVEL: {{ required ".Values.selfserviceListener.config.logLevel is required." .Values.selfserviceListener.config.logLevel | quote  }}
+  MAX_UMC_REQUEST_RETRIES: {{ required ".Values.selfserviceListener.config.maxUmcRequestRetries is required." .Values.selfserviceListener.config.maxUmcRequestRetries | quote  }}
   PROVISIONING_API_BASE_URL: {{ include "selfservice-listener.provisioningApi.connection.baseUrl" . | quote }}
   UMC_SERVER_URL: {{ include "selfservice-listener.umc.connection.baseUrl" . | quote }}
   UMC_ADMIN_USER: {{ include "selfservice-listener.umc.auth.username" . | quote }}

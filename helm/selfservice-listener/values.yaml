@@ -98,6 +98,16 @@ containerSecurityContext:
   # -- Run container as a user.
   runAsNonRoot: true
 
+selfserviceListener:
+  config:
+    # -- Log level for the selfservice listener.
+    # valid values are: ERROR WARNING, INFO, DEBUG
+    logLevel: "INFO"
+    # Configure how often sending the invitation email is retried before the Pod fails.
+    # After a pod restart the message will still be retried again.
+    # valid values are: integers between 0 and 10
+    maxUmcRequestRetries: 5
+
 # Configuration for the communication with the UMC.
 umc:
   # -- Connection parameters
@@ -107,7 +117,7 @@ umc:
   # -- Authentication parameters
   auth:
     # -- The username to authenticate with.
-    username: "Administrator"
+    username: "cn=admin"
     # -- The password to authenticate with.
     password: ""
     # -- The name of the secret containing the password.
