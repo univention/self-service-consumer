@@ -147,14 +147,14 @@ class SelfServiceConsumer:
             if await self.send_email_invitation(username):
                 return
 
-            timeout = min(2**retries / 10, 30)
-            await asyncio.sleep(timeout)
-
             self.logger.info(
-                "Failed sending the invitation email for %s %s times",
+                "Failed sending the invitation email for username: %s. retries: %s",
                 username,
                 retries,
             )
+            if retries != self.settings.max_umc_request_retries:
+                timeout = min(2**retries / 10, 30)
+                await asyncio.sleep(timeout)
 
         self.logger.error(
             "Maximum retries of %s reached for user %s. Check the UMC-Server logs for more information",
