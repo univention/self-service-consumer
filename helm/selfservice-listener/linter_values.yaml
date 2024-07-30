@@ -10,8 +10,6 @@ selfserviceListener:
   ldapBaseDn: "dc=univention,dc=intranet"
   ldapSecret: "stub_secret"
   ldapSecretFile: "/var/secrets/ldap_secret"
-  machineSecret: "stub_secret"
-  machineSecretFile: "/var/secrets/machine_secret"
   ldapHost: "ucs-machine"
   ldapHostDn: "cn=ucs-machine,cn=dc,cn=computers,dc=univention,dc=intranet"
   tlsMode: "unvalidated"

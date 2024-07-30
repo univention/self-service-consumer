@@ -41,7 +41,7 @@ cn=admin,dc=univention-organization,dc=intranet
 {{- if .Values.selfserviceListener.ldapHost -}}
 {{- tpl .Values.selfserviceListener.ldapHost . -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- include "nubusTemplates.ldapServer.ldap.connection.host" . -}}
+{{- printf "%s-ldap-server-primary" .Release.Name -}}
 {{- end -}}
 {{- end -}}
 
@@ -138,10 +138,6 @@ password
 - name: {{ printf "%s-volume" $credentialSecretName | quote }}
   mountPath: "{{ $secretMountPath }}/ldap_secret"
   subPath: {{ .Values.ldap.credentialSecret.ldapPasswordKey | quote }}
-  readOnly: true
-- name: {{ printf "%s-volume" $credentialSecretName | quote }}
-  mountPath: "{{ $secretMountPath }}/machine_secret"
-  subPath: {{ .Values.ldap.credentialSecret.machinePasswordKey | quote }}
   readOnly: true
 {{- end }}
 {{- if $tlsSecretName }}

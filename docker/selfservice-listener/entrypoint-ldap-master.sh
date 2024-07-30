@@ -1,7 +1,8 @@
+#!/bin/bash
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2020-2023 Univention GmbH
+# Copyright 2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -29,11 +30,6 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-ARG LISTENER_BASE_IMAGE_TAG=0.7.0
-ARG LISTENER_BASE_IMAGE=gitregistry.knut.univention.de/univention/customers/dataport/upx/container-listener-base/listener-base
+set -euxo pipefail
 
-FROM ${LISTENER_BASE_IMAGE}:${LISTENER_BASE_IMAGE_TAG} as final
-
-COPY ./docker/selfservice-listener/entrypoint-ensure-volume-permissions.sh /entrypoint.d/25-ensure-volume-permissions.sh
-COPY ./docker/selfservice-listener/entrypoint-ldap-master.sh /entrypoint.d/30-ldap-master.sh
-COPY ./listener/selfservice_listener.py /usr/lib/univention-directory-listener/system/
+ucr set ldap/master=$LDAP_HOST

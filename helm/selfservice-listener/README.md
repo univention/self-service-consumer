@@ -112,15 +112,6 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td>ldap.credentialSecret.machinePasswordKey</td>
-			<td>string</td>
-			<td><pre lang="json">
-"machine.secret"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
 			<td>ldap.credentialSecret.name</td>
 			<td>string</td>
 			<td><pre lang="json">
