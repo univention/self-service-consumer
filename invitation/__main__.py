@@ -12,8 +12,8 @@ from aiohttp import (
     ClientConnectorError,
     ClientTimeout,
 )
-from client import AsyncClient, MessageHandler, Settings
-from shared.models import Message
+from univention.provisioning.consumer import MessageHandler, ProvisioningConsumerClient
+from univention.provisioning.models import Message, Body
 
 from invitation.config import (
     Loglevel,
@@ -27,8 +27,6 @@ class InvalidMessageSchema(Exception):
 
 
 class SelfServiceConsumer:
-    MAX_RETRIES: int = 3
-
     def __init__(self, settings: SelfServiceConsumerSettings | None = None):
         self.settings = settings or get_selfservice_consumer_settings()
         self.logger = self.configure_logging(self.settings.log_level)
@@ -91,24 +89,16 @@ class SelfServiceConsumer:
         )
         return False
 
-    def is_create_event(self, message: Message) -> bool:
-        # TODO: use a better pydantic model for the message validation
-        try:
-            return message.body["new"] and not message.body["old"]
-        except KeyError as error:
-            # TODO: log the message ID
-            self.logger.exception(
-                "Invalid message body. Missing `new` and/or `old` object",
-                exc_info=error,
-            )
-            raise InvalidMessageSchema()
+    @staticmethod
+    def is_create_event(message_body: Body) -> bool:
+        return message_body.new and not message_body.old
 
-    def needs_invitation_email(self, message: Message) -> bool:
+    def needs_invitation_email(self, message_body: Body) -> bool:
         try:
             return all(
                 (
-                    message.body["new"]["properties"]["PasswordRecoveryEmail"],
-                    message.body["new"]["properties"]["pwdChangeNextLogin"],
+                    message_body.new["properties"]["PasswordRecoveryEmail"],
+                    message_body.new["properties"]["pwdChangeNextLogin"],
                 )
             )
         except KeyError as error:
@@ -121,20 +111,21 @@ class SelfServiceConsumer:
             raise InvalidMessageSchema()
 
     async def handle_user_event(self, message: Message) -> None:
-        self.logger.debug("Received the message with the content: %s", message.body)
+        message_body = message.body
+        self.logger.debug("Received the message with the content: %s", message_body)
 
-        if not self.is_create_event(message):
+        if not self.is_create_event(message_body):
             self.logger.debug("Ignoring the message because it is not a create event.")
             return
 
-        if not self.needs_invitation_email(message):
+        if not self.needs_invitation_email(message_body):
             self.logger.debug(
                 "Ignoring the message because the user needs no invitation email."
             )
             return
 
         try:
-            username = message.body["new"]["properties"]["username"]
+            username = message_body.new["properties"]["username"]
         except KeyError as error:
             # TODO: log the message ID
             self.logger.exception(
@@ -166,27 +157,23 @@ class SelfServiceConsumer:
 
     async def start_the_process_of_sending_invitations(
         self,
-        provisionig_client: type[AsyncClient],
+        provisioning_client: type[ProvisioningConsumerClient],
         message_handler: type[MessageHandler],
-        provisioning_api_username: str,
     ) -> None:
         self.logger.info(
             "Starting the process of sending invitation emails via the UMC"
         )
 
         self.logger.info("Start listening for newly created users")
-        async with provisionig_client() as client:
-            await message_handler(
-                client, provisioning_api_username, [self.handle_user_event]
-            ).run()
+        async with provisioning_client() as client:
+            await message_handler(client, [self.handle_user_event]).run()
 
 
 def main() -> None:
     invitation = SelfServiceConsumer()
-    provisioning_api_username = Settings().provisioning_api_username
     asyncio.run(
         invitation.start_the_process_of_sending_invitations(
-            AsyncClient, MessageHandler, provisioning_api_username
+            ProvisioningConsumerClient, MessageHandler
         )
     )
 

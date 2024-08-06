@@ -1,15 +1,39 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2024 Univention GmbH
-
+import os
 from copy import deepcopy
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 from aiohttp import BasicAuth
 import pytest
-from client import AsyncClient, MessageHandler, Settings
-from shared.models import Message, ProvisioningMessage, PublisherName
+from univention.provisioning.consumer import (
+    MessageHandler,
+    ProvisioningConsumerClient,
+    ProvisioningConsumerClientSettings,
+)
+from univention.provisioning.models import (
+    Message,
+    Body,
+    ProvisioningMessage,
+    PublisherName,
+)
 from invitation.__main__ import InvalidMessageSchema, SelfServiceConsumer
 from invitation.config import SelfServiceConsumerSettings
+
+ENV_DEFAULTS = {
+    "max_acknowledgement_retries": "3",
+}
+
+
+def set_test_env_vars():
+    for var, default in ENV_DEFAULTS.items():
+        if var.lower() in (key.lower() for key in os.environ):
+            continue
+        os.environ[var] = default
+        print(f"{var} was not explicitly set, setting the following default: {default}")
+
+
+set_test_env_vars()
 
 
 class AsyncContextManagerMock(MagicMock):
@@ -33,39 +57,36 @@ MESSAGE = Message(
     ts=datetime(2023, 11, 9, 11, 15, 52, 616061),
     realm="udm",
     topic="users/user",
-    body={
-        "new": {
+    body=Body(
+        new={
             "properties": {
                 "username": USERNAME,
                 "PasswordRecoveryEmail": "example@gmail.com",
                 "pwdChangeNextLogin": True,
             }
         },
-        "old": None,
-    },
+        old={},
+    ),
 )
-MESSAGE_INVALID_BODY = deepcopy(MESSAGE)
-MESSAGE_INVALID_BODY.body = {}
 
 MESSAGE_OLD_USER = deepcopy(MESSAGE)
-MESSAGE_OLD_USER.body["old"] = {"properties": {"username": USERNAME}}
+MESSAGE_OLD_USER.body.old = {"properties": {"username": USERNAME}}
 
 MESSAGE_NO_EMAIL = deepcopy(MESSAGE)
-MESSAGE_NO_EMAIL.body["new"]["properties"] = {
+MESSAGE_NO_EMAIL.body.new["properties"] = {
     "username": USERNAME,
     "pwdChangeNextLogin": True,
 }
 
 MESSAGE_PWD_CHANGE_NEXT_LOGIN_IS_NONE = deepcopy(MESSAGE)
-MESSAGE_PWD_CHANGE_NEXT_LOGIN_IS_NONE.body["new"]["properties"] = {
+MESSAGE_PWD_CHANGE_NEXT_LOGIN_IS_NONE.body.new["properties"] = {
     "username": USERNAME,
     "PasswordRecoveryEmail": "example@gmail.com",
     "pwdChangeNextLogin": None,
 }
 
-
 MESSAGE_NO_USERNAME = deepcopy(MESSAGE)
-MESSAGE_NO_USERNAME.body["new"]["properties"] = {
+MESSAGE_NO_USERNAME.body.new["properties"] = {
     "PasswordRecoveryEmail": "example@gmail.com",
     "pwdChangeNextLogin": True,
 }
@@ -93,19 +114,20 @@ def selfservice_consumer(selfservice_consumer_settings) -> SelfServiceConsumer:
 
 
 @pytest.fixture
-def provisioining_client_settings() -> Settings:
-    return Settings(
+def provisioining_client_settings() -> ProvisioningConsumerClientSettings:
+    return ProvisioningConsumerClientSettings(
         provisioning_api_base_url="http://foo.local",
         provisioning_api_username="bar",
         provisioning_api_password="baz",
+        log_level="DEBUG",
     )
 
 
 @pytest.fixture
 async def mock_provisioning_client(
-    provisioining_client_settings: Settings,
-) -> AsyncClient:
-    client = AsyncClient(provisioining_client_settings)
+    provisioining_client_settings: ProvisioningConsumerClientSettings,
+) -> ProvisioningConsumerClient:
+    client = ProvisioningConsumerClient(provisioining_client_settings)
     client.get_subscription_message = AsyncMock()
     client.set_message_status = AsyncMock()
     return client
@@ -127,7 +149,16 @@ PROVISIONING_MESSAGE = ProvisioningMessage(
     ts=datetime.now(),
     realm="udm",
     topic="users/user",
-    body={"old": {}, "new": {}},
+    body=Body(
+        old={},
+        new={
+            "properties": {
+                "username": "jblob",
+                "pwdChangeNextLogin": True,
+                "PasswordRecoveryEmail": "lohmer@univention.de",
+            }
+        },
+    ),
     sequence_number=33,
     num_delivered=2,
 )
@@ -136,10 +167,13 @@ PROVISIONING_MESSAGE = ProvisioningMessage(
 @pytest.mark.anyio
 async def test_invalid_requests(
     selfservice_consumer: SelfServiceConsumer,
-    mock_provisioning_client: AsyncClient,
+    mock_provisioning_client: ProvisioningConsumerClient,
 ):
+    invalid_message = deepcopy(PROVISIONING_MESSAGE)
+    invalid_message.body.old = {}
+    invalid_message.body.new = {}
     mock_provisioning_client.get_subscription_message.side_effect = [
-        PROVISIONING_MESSAGE,
+        invalid_message,
         EscapeLoopException("let's exit the loop"),
     ]
 
@@ -147,7 +181,7 @@ async def test_invalid_requests(
 
     with pytest.raises(EscapeLoopException):
         await selfservice_consumer.start_the_process_of_sending_invitations(
-            mock_constructor_factory(mock_provisioning_client), MessageHandler, "foobar"
+            mock_constructor_factory(mock_provisioning_client), MessageHandler
         )
 
     selfservice_consumer.send_email_invitation.assert_not_awaited()
@@ -156,7 +190,7 @@ async def test_invalid_requests(
 @pytest.mark.anyio
 async def test_valid_provisioning_message(
     selfservice_consumer: SelfServiceConsumer,
-    mock_provisioning_client: AsyncClient,
+    mock_provisioning_client: ProvisioningConsumerClient,
 ):
     mock_provisioning_client.get_subscription_message.side_effect = [
         PROVISIONING_MESSAGE,
@@ -164,21 +198,10 @@ async def test_valid_provisioning_message(
     ]
 
     selfservice_consumer.send_email_invitation = AsyncMock()
-    message = PROVISIONING_MESSAGE
-    message.body = {
-        "new": {
-            "properties": {
-                "username": "jblob",
-                "pwdChangeNextLogin": True,
-                "PasswordRecoveryEmail": "lohmer@univention.de",
-            }
-        },
-        "old": None,
-    }
 
     with pytest.raises(EscapeLoopException):
         await selfservice_consumer.start_the_process_of_sending_invitations(
-            mock_constructor_factory(mock_provisioning_client), MessageHandler, "foobar"
+            mock_constructor_factory(mock_provisioning_client), MessageHandler
         )
     selfservice_consumer.send_email_invitation.assert_awaited_once_with("jblob")
 
@@ -234,7 +257,7 @@ async def test_message_filtering(
 @pytest.mark.anyio
 @pytest.mark.parametrize(
     "message",
-    [MESSAGE_NO_EMAIL, MESSAGE_NO_USERNAME, MESSAGE_INVALID_BODY],
+    [MESSAGE_NO_EMAIL, MESSAGE_NO_USERNAME],
 )
 async def test_invalid_message_schema(
     message: Message,

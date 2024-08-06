@@ -10,10 +10,12 @@ readme = "README.md"
 packages = [{ include = "invitation" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.11"
 aiohttp = "^3.8.5"
 anyio = "^4.3.0"
-provisioning-consumer-lib = "^0.23.3"
+# TODO: Needs an update once the related MR is merged
+# See: https://git.knut.univention.de/univention/customers/dataport/upx/provisioning/-/merge_requests/165
+nubus-provisioning-consumer = "0.32.0.dev0+pre-acaceres-avoid-dummy-events-in-production-queues.3d6d25c2"
 pydantic = "^2.3.0"
 pydantic-settings = "^2.0.3"
 

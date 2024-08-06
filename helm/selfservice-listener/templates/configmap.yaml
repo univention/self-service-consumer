@@ -22,4 +22,5 @@ data:
   UMC_SERVER_URL: {{ include "selfservice-listener.umc.connection.baseUrl" . | quote }}
   UMC_ADMIN_USER: {{ include "selfservice-listener.umc.auth.username" . | quote }}
   PROVISIONING_API_USERNAME: {{ include "selfservice-listener.provisioningApi.auth.username" . | quote }}
+  MAX_ACKNOWLEDGEMENT_RETRIES: {{ required "The parameter \".Values.provisioningApi.maxAcknowledgementRetries\" is required." .Values.provisioningApi.maxAcknowledgementRetries | quote }}
 ...
