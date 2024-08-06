@@ -94,7 +94,7 @@ class SelfServiceConsumer:
     def is_create_event(self, message: Message) -> bool:
         # TODO: use a better pydantic model for the message validation
         try:
-            return message.body["new"] and message.body["old"] is None
+            return message.body["new"] and not message.body["old"]
         except KeyError as error:
             # TODO: log the message ID
             self.logger.exception(
