@@ -15,7 +15,7 @@ aiohttp = "^3.8.5"
 anyio = "^4.3.0"
 # TODO: Needs an update once the related MR is merged
 # See: https://git.knut.univention.de/univention/customers/dataport/upx/provisioning/-/merge_requests/165
-nubus-provisioning-consumer = "0.32.0.dev0+pre-acaceres-avoid-dummy-events-in-production-queues.3d6d25c2"
+nubus-provisioning-consumer = "0.33.0.dev0+pre-acaceres-avoid-dummy-events-in-production-queues.ccccaf41"
 pydantic = "^2.3.0"
 pydantic-settings = "^2.0.3"
 

@@ -475,13 +475,13 @@ files = [
 
 [[package]]
 name = "nubus-provisioning-consumer"
-version = "0.32.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.3d6d25c2"
+version = "0.33.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.ccccaf41"
 description = "Provisioning consumer library"
 optional = false
 python-versions = ">=3.11,<4.0"
 files = [
-    {file = "nubus_provisioning_consumer-0.32.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.3d6d25c2-py3-none-any.whl", hash = "sha256:a6ffc1b6dcfb62f98ee3e49664fcd35af4752f3b9f7dadf0510e1f2d51744218"},
-    {file = "nubus_provisioning_consumer-0.32.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.3d6d25c2.tar.gz", hash = "sha256:e125ec27910c2e1f0855c528e6a8b3ae1b9a54c5fbfb72f4c00195c80c44f501"},
+    {file = "nubus_provisioning_consumer-0.33.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.ccccaf41-py3-none-any.whl", hash = "sha256:680299c2d085e074f86bd9ebe71c9501364bb30070f69e61f5f47a1cdad33780"},
+    {file = "nubus_provisioning_consumer-0.33.0.dev0+pre.acaceres.avoid.dummy.events.in.production.queues.ccccaf41.tar.gz", hash = "sha256:0b6590f5f7ff387fa1ff0aa1e1c6631bc14892f05025f01e230065c37c3239e1"},
 ]
 
 [package.dependencies]
@@ -843,4 +843,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "59fae833f78e566e30856713af1fffd4444ad6ab3b807f03b2bfe30cf5835a70"
+content-hash = "a53d43065d1f5b20f62cb79a98733a6cd9335638b324963ae9ed4030970cecc5"

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2024 Univention GmbH
-import os
+
 from copy import deepcopy
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
@@ -11,6 +11,7 @@ from univention.provisioning.consumer import (
     ProvisioningConsumerClient,
     ProvisioningConsumerClientSettings,
 )
+from univention.provisioning.consumer.config import MessageHandlerSettings
 from univention.provisioning.models import (
     Message,
     Body,
@@ -19,21 +20,6 @@ from univention.provisioning.models import (
 )
 from invitation.__main__ import InvalidMessageSchema, SelfServiceConsumer
 from invitation.config import SelfServiceConsumerSettings
-
-ENV_DEFAULTS = {
-    "max_acknowledgement_retries": "3",
-}
-
-
-def set_test_env_vars():
-    for var, default in ENV_DEFAULTS.items():
-        if var.lower() in (key.lower() for key in os.environ):
-            continue
-        os.environ[var] = default
-        print(f"{var} was not explicitly set, setting the following default: {default}")
-
-
-set_test_env_vars()
 
 
 class AsyncContextManagerMock(MagicMock):
@@ -124,6 +110,11 @@ def provisioining_client_settings() -> ProvisioningConsumerClientSettings:
 
 
 @pytest.fixture
+def message_handler_settings() -> MessageHandlerSettings:
+    return MessageHandlerSettings(max_acknowledgement_retries=3)
+
+
+@pytest.fixture
 async def mock_provisioning_client(
     provisioining_client_settings: ProvisioningConsumerClientSettings,
 ) -> ProvisioningConsumerClient:
@@ -133,8 +124,21 @@ async def mock_provisioning_client(
     return client
 
 
+@pytest.fixture
+async def mock_message_handler(
+    message_handler_settings: MessageHandlerSettings,
+    mock_provisioning_client: ProvisioningConsumerClient,
+    selfservice_consumer,
+) -> MessageHandler:
+    return MessageHandler(
+        mock_provisioning_client,
+        [selfservice_consumer.handle_user_event],
+        message_handler_settings,
+    )
+
+
 def mock_constructor_factory(instance):
-    def mock_constructor():
+    def mock_constructor(*args):
         return instance
 
     return mock_constructor
@@ -168,6 +172,7 @@ PROVISIONING_MESSAGE = ProvisioningMessage(
 async def test_invalid_requests(
     selfservice_consumer: SelfServiceConsumer,
     mock_provisioning_client: ProvisioningConsumerClient,
+    mock_message_handler: MessageHandler,
 ):
     invalid_message = deepcopy(PROVISIONING_MESSAGE)
     invalid_message.body.old = {}
@@ -181,7 +186,8 @@ async def test_invalid_requests(
 
     with pytest.raises(EscapeLoopException):
         await selfservice_consumer.start_the_process_of_sending_invitations(
-            mock_constructor_factory(mock_provisioning_client), MessageHandler
+            mock_constructor_factory(mock_provisioning_client),
+            mock_constructor_factory(mock_message_handler),
         )
 
     selfservice_consumer.send_email_invitation.assert_not_awaited()
@@ -191,6 +197,7 @@ async def test_invalid_requests(
 async def test_valid_provisioning_message(
     selfservice_consumer: SelfServiceConsumer,
     mock_provisioning_client: ProvisioningConsumerClient,
+    mock_message_handler: MessageHandler,
 ):
     mock_provisioning_client.get_subscription_message.side_effect = [
         PROVISIONING_MESSAGE,
@@ -201,7 +208,8 @@ async def test_valid_provisioning_message(
 
     with pytest.raises(EscapeLoopException):
         await selfservice_consumer.start_the_process_of_sending_invitations(
-            mock_constructor_factory(mock_provisioning_client), MessageHandler
+            mock_constructor_factory(mock_provisioning_client),
+            mock_constructor_factory(mock_message_handler),
         )
     selfservice_consumer.send_email_invitation.assert_awaited_once_with("jblob")
 
