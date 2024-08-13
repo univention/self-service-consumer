@@ -1,3 +1,4 @@
 /helm/*/charts/
 **/__pycache__/
 .idea/
+.venv

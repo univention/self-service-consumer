@@ -4,70 +4,62 @@
 import asyncio
 import logging
 import sys
+from importlib.metadata import version
+from typing import Awaitable, Callable
+
 from aiohttp import (
-    ClientError,
-    ClientSession,
-    ClientResponse,
     BasicAuth,
     ClientConnectorError,
+    ClientError,
+    ClientResponse,
+    ClientSession,
     ClientTimeout,
 )
-from univention.provisioning.consumer import MessageHandler, ProvisioningConsumerClient
-from univention.provisioning.models import Message, Body
 
 from invitation.config import (
     Loglevel,
     SelfServiceConsumerSettings,
     get_selfservice_consumer_settings,
 )
+from univention.provisioning.consumer import MessageHandler, ProvisioningConsumerClient
+from univention.provisioning.models import Body, Message
+
+LOG_FORMAT = "%(asctime)s %(levelname)-5s [%(module)s.%(funcName)s:%(lineno)d] %(message)s"
+
+logger = logging.getLogger(__name__)
 
 
-class InvalidMessageSchema(Exception):
-    ...
+class InvalidMessageSchema(Exception): ...
 
 
 class SelfServiceConsumer:
     def __init__(self, settings: SelfServiceConsumerSettings | None = None):
         self.settings = settings or get_selfservice_consumer_settings()
-        self.logger = self.configure_logging(self.settings.log_level)
-
-    @staticmethod
-    def configure_logging(log_level: Loglevel) -> logging.Logger:
-        console_handler = logging.StreamHandler(sys.stdout)
-        logger = logging.getLogger("selfservice-invitation")
-        logger.setLevel(log_level)
-        formatter = logging.Formatter(
-            "%(asctime)s.%(msecs)03d  %(name)-11s ( %(levelname)-7s ) : %(message)s",
-            "%d.%m.%y %H:%M:%S",
-        )
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-        return logger
 
     async def send_email(self, username: str) -> ClientResponse:
-        async with ClientSession(
-            timeout=ClientTimeout(total=30)
-        ) as session, session.post(
-            f"{self.settings.umc_server_url}/command/passwordreset/send_token",
-            json={"options": {"username": username, "method": "email"}},
-            auth=BasicAuth(
-                self.settings.umc_admin_user, self.settings.umc_admin_password
-            ),
-        ) as response:
+        session_kwargs = {
+            "url": f"{self.settings.umc_server_url}/command/passwordreset/send_token",
+            "json": {"options": {"username": username, "method": "email"}},
+            "auth": BasicAuth(self.settings.umc_admin_user, self.settings.umc_admin_password),
+        }
+        async with (
+            ClientSession(timeout=ClientTimeout(total=30)) as session,
+            session.post(**session_kwargs) as response,
+        ):
             return response
 
     async def send_email_invitation(self, username) -> bool:
-        self.logger.info("Sending email invitation to user %s", username)
+        logger.info("Sending email invitation to user %r", username)
         try:
             response = await self.send_email(username)
         except ClientConnectorError as error:
-            self.logger.error(
+            logger.error(
                 "Failed to reach the UMC Server while trying to trigger an email invitation: %s",
                 error,
             )
             return False
         except ClientError as error:
-            self.logger.error(
+            logger.error(
                 "Failed email invitation request: %s Check the UMC Server logs for more information.",
                 error,
             )
@@ -75,16 +67,16 @@ class SelfServiceConsumer:
         try:
             response_data = await response.json()
         except ClientError:
-            self.logger.warning("Failed to parse the json response")
+            logger.warning("Failed to parse the json response")
         else:
-            self.logger.debug("UMC-Server response: %r", response_data)
+            logger.debug("UMC-Server response: %r", response_data)
 
         if response.status == 200:
-            self.logger.info("Email invitation was triggered")
+            logger.info("Email invitation was triggered")
             return True
 
-        self.logger.error(
-            "There was an error requesting a user invitation email. UMC-Server status: %s",
+        logger.error(
+            "There was an error requesting a user invitation email. UMC-Server status: %d",
             response.status,
         )
         return False
@@ -93,7 +85,8 @@ class SelfServiceConsumer:
     def is_create_event(message_body: Body) -> bool:
         return message_body.new and not message_body.old
 
-    def needs_invitation_email(self, message_body: Body) -> bool:
+    @staticmethod
+    def needs_invitation_email(message_body: Body) -> bool:
         try:
             return all(
                 (
@@ -101,45 +94,37 @@ class SelfServiceConsumer:
                     message_body.new["properties"]["pwdChangeNextLogin"],
                 )
             )
-        except KeyError as error:
+        except KeyError:
             # TODO: log the message ID
-            self.logger.exception(
+            raise InvalidMessageSchema(
                 "Invalid message body. "
                 "Make sure that the selfservice udm extensions are installed in all necessary place.",
-                exc_info=error,
             )
-            raise InvalidMessageSchema()
 
     async def handle_user_event(self, message: Message) -> None:
         message_body = message.body
-        self.logger.debug("Received the message with the content: %s", message_body)
+        logger.debug("Received the message with the content: %s", message_body)
 
         if not self.is_create_event(message_body):
-            self.logger.debug("Ignoring the message because it is not a create event.")
+            logger.debug("Ignoring the message because it is not a create event.")
             return
 
         if not self.needs_invitation_email(message_body):
-            self.logger.debug(
-                "Ignoring the message because the user needs no invitation email."
-            )
+            logger.debug("Ignoring the message because the user needs no invitation email.")
             return
 
         try:
             username = message_body.new["properties"]["username"]
-        except KeyError as error:
+        except KeyError:
             # TODO: log the message ID
-            self.logger.exception(
-                "Invalid message body. Missing `username` property in `new` object.",
-                exc_info=error,
-            )
-            raise InvalidMessageSchema()
+            raise InvalidMessageSchema("Invalid message body. Missing `username` property in `new` object.")
 
         for retries in range(self.settings.max_umc_request_retries + 1):
             if await self.send_email_invitation(username):
                 return
 
-            self.logger.info(
-                "Failed sending the invitation email for username: %s. retries: %s",
+            logger.debug(
+                "Failed sending the invitation email for username: %r. retries: %d",
                 username,
                 retries,
             )
@@ -147,36 +132,37 @@ class SelfServiceConsumer:
                 timeout = min(2**retries / 10, 30)
                 await asyncio.sleep(timeout)
 
-        self.logger.error(
-            "Maximum retries of %s reached for user %s. Check the UMC-Server logs for more information",
+        logger.error(
+            "Maximum retries of %d reached for user %r. Check the UMC-Server logs for more information.",
             self.settings.max_umc_request_retries,
             username,
         )
         # Crash the process; an unhandled message will be redelivered
         sys.exit(1)
 
-    async def start_the_process_of_sending_invitations(
-        self,
-        provisioning_client: type[ProvisioningConsumerClient],
-        message_handler: type[MessageHandler],
-    ) -> None:
-        self.logger.info(
-            "Starting the process of sending invitation emails via the UMC"
-        )
 
-        self.logger.info("Start listening for newly created users")
-        async with provisioning_client() as client:
-            await message_handler(client, [self.handle_user_event]).run()
+def configure_logging(log_level: Loglevel) -> None:
+    _handler = logging.StreamHandler(sys.stdout)
+    _logger = logging.getLogger()
+    _logger.setLevel(log_level)
+    formatter = logging.Formatter(LOG_FORMAT)
+    _handler.setFormatter(formatter)
+    _logger.addHandler(_handler)
 
 
-def main() -> None:
-    invitation = SelfServiceConsumer()
-    asyncio.run(
-        invitation.start_the_process_of_sending_invitations(
-            ProvisioningConsumerClient, MessageHandler
-        )
-    )
+async def start_consumer(
+    provisioning_client: type[ProvisioningConsumerClient],
+    message_handler: type[MessageHandler],
+    handler: Callable[[Message], Awaitable[None]],
+) -> None:
+    logger.info("Starting to listen for newly created users for sending of invitation emails via the UMC.")
+    logger.info("Using 'nubus-provisioning-consumer' library version %r.", version("nubus-provisioning-consumer"))
+    async with provisioning_client() as client:
+        await message_handler(client, [handler]).run()
 
 
 if __name__ == "__main__":
-    main()
+    _settings = get_selfservice_consumer_settings()
+    configure_logging(_settings.log_level)
+    invitation = SelfServiceConsumer()
+    asyncio.run(start_consumer(ProvisioningConsumerClient, MessageHandler, invitation.handle_user_event))

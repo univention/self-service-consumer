@@ -4,8 +4,12 @@
 from copy import deepcopy
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
-from aiohttp import BasicAuth
+
 import pytest
+from aiohttp import BasicAuth
+
+from invitation.__main__ import InvalidMessageSchema, SelfServiceConsumer
+from invitation.config import SelfServiceConsumerSettings
 from univention.provisioning.consumer import (
     MessageHandler,
     ProvisioningConsumerClient,
@@ -13,13 +17,11 @@ from univention.provisioning.consumer import (
 )
 from univention.provisioning.consumer.config import MessageHandlerSettings
 from univention.provisioning.models import (
-    Message,
     Body,
+    Message,
     ProvisioningMessage,
     PublisherName,
 )
-from invitation.__main__ import InvalidMessageSchema, SelfServiceConsumer
-from invitation.config import SelfServiceConsumerSettings
 
 
 class AsyncContextManagerMock(MagicMock):
@@ -144,8 +146,7 @@ def mock_constructor_factory(instance):
     return mock_constructor
 
 
-class EscapeLoopException(Exception):
-    ...
+class EscapeLoopException(Exception): ...
 
 
 PROVISIONING_MESSAGE = ProvisioningMessage(
@@ -185,7 +186,7 @@ async def test_invalid_requests(
     selfservice_consumer.send_email_invitation = AsyncMock()
 
     with pytest.raises(EscapeLoopException):
-        await selfservice_consumer.start_the_process_of_sending_invitations(
+        await selfservice_consumer.start_consumer(
             mock_constructor_factory(mock_provisioning_client),
             mock_constructor_factory(mock_message_handler),
         )
@@ -207,7 +208,7 @@ async def test_valid_provisioning_message(
     selfservice_consumer.send_email_invitation = AsyncMock()
 
     with pytest.raises(EscapeLoopException):
-        await selfservice_consumer.start_the_process_of_sending_invitations(
+        await selfservice_consumer.start_consumer(
             mock_constructor_factory(mock_provisioning_client),
             mock_constructor_factory(mock_message_handler),
         )
@@ -282,9 +283,7 @@ async def test_invalid_message_schema(
 @pytest.mark.anyio
 @patch("asyncio.sleep", return_value=None)
 @pytest.mark.parametrize("retries", [0, 3, 9, 10])
-async def test_valid_retry_values(
-    mock_sleep, retries, selfservice_consumer: SelfServiceConsumer
-):
+async def test_valid_retry_values(mock_sleep, retries, selfservice_consumer: SelfServiceConsumer):
     selfservice_consumer.settings.max_umc_request_retries = retries
     selfservice_consumer.send_email_invitation = AsyncMock(return_value=False)
 

@@ -13,12 +13,9 @@ packages = [{ include = "invitation" }]
 python = "^3.11"
 aiohttp = "^3.8.5"
 anyio = "^4.3.0"
-nubus-provisioning-consumer = "0.33.0"
+nubus-provisioning-consumer = "0.35.0"
 pydantic = "^2.3.0"
 pydantic-settings = "^2.0.3"
-
-[tool.poetry.scripts]
-selfservice = "invitation.__main__:main"
 
 [tool.poetry.group.dev]
 optional = true
@@ -37,7 +34,14 @@ name = "PyPI"
 priority = "primary"
 
 [tool.ruff]
+target-version = "py311"
 line-length = 120
+
+[tool.ruff.lint]
+extend-select = ["I"]  # activate isort
+
+[tool.ruff.lint.isort]
+known-first-party = ["univention"]
 
 [build-system]
 requires = ["poetry-core"]

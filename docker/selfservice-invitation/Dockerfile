@@ -82,4 +82,4 @@ WORKDIR ${WORKDIR}
 
 COPY --from=build ${WORKDIR} ${WORKDIR}
 
-ENTRYPOINT ["poetry", "run", "selfservice"]
+ENTRYPOINT ["poetry", "run", "python3", "-m", "invitation"]
