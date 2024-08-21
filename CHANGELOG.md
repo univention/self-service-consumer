@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.7.0...v0.7.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* rename helm chart from listener to consumer ([fceb5b7](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/fceb5b74b94071f8c77deae92667555f7d6d379f))
+
 ## [0.7.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.6.5...v0.7.0) (2024-08-14)
 
 
