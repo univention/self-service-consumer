@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.3](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.7.2...v0.7.3) (2024-09-12)
+
+
+### Bug Fixes
+
+* add wait-for-provisioning-api to wait until the user/subscription is created ([6b2014a](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/6b2014a0b2b7e6a416a0d7fdfbc28fa05a38f54f))
+
 ## [0.7.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.7.1...v0.7.2) (2024-08-29)
 
 
