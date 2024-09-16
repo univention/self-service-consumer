@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.7.3...v0.8.0) (2024-09-16)
+
+
+### Features
+
+* update UCS base image to 2024-09-09 ([67849b7](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/67849b7f2bce8b50bf9b334a994bbed86512fe70))
+* upgrade wait-for-dependency ([7e141c6](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/7e141c6997a27bbed07f40a34ff15059aad65432))
+
 ## [0.7.3](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.7.2...v0.7.3) (2024-09-12)
 
 
