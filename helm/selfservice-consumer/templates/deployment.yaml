@@ -96,8 +96,6 @@ spec:
               set -euxo pipefail
               poetry run python3 -m invitation
           env:
-            - name: UMC_ADMIN_PASSWORD
-            {{- include "selfservice-listener.umc.auth.password" . | nindent 14 }}
             - name: PROVISIONING_API_PASSWORD
             {{- include "selfservice-listener.provisioningApi.auth.password" . | nindent 14 }}
           envFrom:

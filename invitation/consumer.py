@@ -6,7 +6,6 @@ import logging
 import sys
 
 from aiohttp import (
-    BasicAuth,
     ClientConnectorError,
     ClientError,
     ClientResponse,
@@ -31,7 +30,6 @@ class SelfServiceConsumer:
         session_kwargs = {
             "url": f"{self.settings.umc_server_url}/command/passwordreset/send_token",
             "json": {"options": {"username": username, "method": "email"}},
-            "auth": BasicAuth(self.settings.umc_admin_user, self.settings.umc_admin_password),
         }
         async with (
             ClientSession(timeout=ClientTimeout(total=30)) as session,
