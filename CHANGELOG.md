@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.9.0...v0.9.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* Don't leak secrets in bash scripts ([adc70c9](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/adc70c9a95921414d7a4d551c4e00c5cf7f61399))
+
 ## [0.9.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.8.0...v0.9.0) (2024-09-18)
 
 
