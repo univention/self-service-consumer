@@ -13,7 +13,7 @@ packages = [{ include = "invitation" }]
 python = "^3.11"
 aiohttp = "^3.8.5"
 anyio = "^4.3.0"
-nubus-provisioning-consumer = "0.37.1"
+nubus-provisioning-consumer = "0.41.0"
 pydantic = "^2.3.0"
 pydantic-settings = "^2.0.3"
 
