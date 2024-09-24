@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.9.1...v0.10.0) (2024-09-24)
+
+
+### Features
+
+* bump provisioning client, adapt to new endpoint names ([744e66e](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/744e66e1c8e9341290fcde042250c1a0670316da))
+
 ## [0.9.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.9.0...v0.9.1) (2024-09-23)
 
 
