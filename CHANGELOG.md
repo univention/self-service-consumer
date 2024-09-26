@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.10.0...v0.11.0) (2024-09-26)
+
+
+### Features
+
+* **ci:** enable malware scanning, disable sbom generation ([f146042](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/f1460428eeda3081ade42cbc4eceac7ec1561b7c))
+
 ## [0.10.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.9.1...v0.10.0) (2024-09-24)
 
 
