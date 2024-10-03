@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.11.1...v0.11.2) (2024-10-03)
+
+
+### Bug Fixes
+
+* removed unused functions on the template helper ([4777295](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/4777295b56736eb8a89b51d43dd1477fc135f5db))
+
 ## [0.11.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.11.0...v0.11.1) (2024-09-26)
 
 
