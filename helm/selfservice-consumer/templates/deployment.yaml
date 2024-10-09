@@ -80,8 +80,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-common" (include "common.names.fullname" .) }}
-          resources:
-            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
       containers:
         - name: "selfservice-listener"
           {{- if .Values.containerSecurityContext.enabled }}
