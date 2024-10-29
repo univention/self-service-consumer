@@ -121,18 +121,6 @@ umc:
   connection:
     # -- The base URL the UMC is reachable at. (e.g. "https://umc-server")
     baseUrl: ""
-  # -- Authentication parameters
-  auth:
-    # -- The username to authenticate with.
-    username: "cn=admin"
-    # -- The password to authenticate with.
-    password: ""
-    # -- The name of the secret containing the password.
-    credentialSecret:
-      # -- The name of the secret.
-      name: ""
-      # -- The key where the password can be found.
-      key: "UMC_ADMIN_PASSWORD"
 
 # Configuration for the communication with the provisioning API.
 provisioningApi:
@@ -146,12 +134,12 @@ provisioningApi:
   # -- Authentication parameters
   auth:
     # -- The username to authenticate with.
-    username: "selfservice"
+    username: null
     # -- The password to authenticate with.
-    password: ""
+    # TODO: Make the password configurable by moving the secret manifest generation into the component charts.
+    # password: ""
     # -- The name of the secret containing the password.
-    credentialSecret:
-      # -- The name of the secret.
-      name: ""
-      # -- The key where the password can be found.
-      key: "PROVISIONING_API_PASSWORD"
+    existingSecret:
+      name: null
+      keyMapping:
+        password: null

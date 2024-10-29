@@ -2,10 +2,13 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
 ---
-api:
+provisioningApi:
   auth:
-    password: "password"
     username: "username"
+    existingSecret:
+      name: "custom-secret-name"
+      keyMapping:
+        password: "custom-secret-key"
   connection:
     baseUrl: "http://test-provisioning-api"
 umc:

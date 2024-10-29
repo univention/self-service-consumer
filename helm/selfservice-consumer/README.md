@@ -2,7 +2,7 @@
 
 The selfservice consumer for handling user invites
 
-- **Version**: 0.1.0
+- **Version**: 0.11.3
 - **Type**: application
 - **AppVersion**: 0.0.1
 -
@@ -264,61 +264,37 @@ false
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "credentialSecret": {
-    "key": "PROVISIONING_API_PASSWORD",
-    "name": ""
+  "existingSecret": {
+    "keyMapping": {
+      "password": null
+    },
+    "name": null
   },
-  "password": "",
-  "username": "selfservice"
+  "username": null
 }
 </pre>
 </td>
 			<td>Authentication parameters</td>
 		</tr>
 		<tr>
-			<td>provisioningApi.auth.credentialSecret</td>
+			<td>provisioningApi.auth.existingSecret</td>
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "key": "PROVISIONING_API_PASSWORD",
-  "name": ""
+  "keyMapping": {
+    "password": null
+  },
+  "name": null
 }
 </pre>
 </td>
 			<td>The name of the secret containing the password.</td>
 		</tr>
 		<tr>
-			<td>provisioningApi.auth.credentialSecret.key</td>
-			<td>string</td>
-			<td><pre lang="json">
-"PROVISIONING_API_PASSWORD"
-</pre>
-</td>
-			<td>The key where the password can be found.</td>
-		</tr>
-		<tr>
-			<td>provisioningApi.auth.credentialSecret.name</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The name of the secret.</td>
-		</tr>
-		<tr>
-			<td>provisioningApi.auth.password</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The password to authenticate with.</td>
-		</tr>
-		<tr>
 			<td>provisioningApi.auth.username</td>
 			<td>string</td>
 			<td><pre lang="json">
-"selfservice"
+null
 </pre>
 </td>
 			<td>The username to authenticate with.</td>
@@ -441,70 +417,6 @@ true
 </pre>
 </td>
 			<td></td>
-		</tr>
-		<tr>
-			<td>umc.auth</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "credentialSecret": {
-    "key": "UMC_ADMIN_PASSWORD",
-    "name": ""
-  },
-  "password": "",
-  "username": "cn=admin"
-}
-</pre>
-</td>
-			<td>Authentication parameters</td>
-		</tr>
-		<tr>
-			<td>umc.auth.credentialSecret</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "key": "UMC_ADMIN_PASSWORD",
-  "name": ""
-}
-</pre>
-</td>
-			<td>The name of the secret containing the password.</td>
-		</tr>
-		<tr>
-			<td>umc.auth.credentialSecret.key</td>
-			<td>string</td>
-			<td><pre lang="json">
-"UMC_ADMIN_PASSWORD"
-</pre>
-</td>
-			<td>The key where the password can be found.</td>
-		</tr>
-		<tr>
-			<td>umc.auth.credentialSecret.name</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The name of the secret.</td>
-		</tr>
-		<tr>
-			<td>umc.auth.password</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The password to authenticate with.</td>
-		</tr>
-		<tr>
-			<td>umc.auth.username</td>
-			<td>string</td>
-			<td><pre lang="json">
-"cn=admin"
-</pre>
-</td>
-			<td>The username to authenticate with.</td>
 		</tr>
 		<tr>
 			<td>umc.connection</td>

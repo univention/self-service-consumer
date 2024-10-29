@@ -20,7 +20,6 @@ data:
   MAX_UMC_REQUEST_RETRIES: {{ required ".Values.selfserviceListener.config.maxUmcRequestRetries is required." .Values.selfserviceListener.config.maxUmcRequestRetries | quote  }}
   PROVISIONING_API_BASE_URL: {{ include "selfservice-listener.provisioningApi.connection.baseUrl" . | quote }}
   UMC_SERVER_URL: {{ include "selfservice-listener.umc.connection.baseUrl" . | quote }}
-  PROVISIONING_API_USERNAME: {{ include "selfservice-listener.provisioningApi.auth.username" . | quote }}
   MAX_ACKNOWLEDGEMENT_RETRIES: {{ required "The parameter \".Values.provisioningApi.config.maxAcknowledgementRetries\" is required." .Values.provisioningApi.config.maxAcknowledgementRetries | quote }}
 ...
 ---

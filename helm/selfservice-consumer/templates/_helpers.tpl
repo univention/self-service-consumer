@@ -32,39 +32,3 @@ These template definitions are only used in this chart and do not relate to temp
 {{- required ".Values.umc.connection.baseUrl must be defined." .Values.umc.connection.baseUrl -}}
 {{- end -}}
 {{- end -}}
-
-{{- define "selfservice-listener.provisioningApi.auth.username" -}}
-{{- if .Values.provisioningApi.auth.username -}}
-{{- .Values.provisioningApi.auth.username -}}
-{{- else -}}
-{{- required ".Values.provisioningApi.auth.username must be defined." .Values.provisioningApi.auth.username -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "selfservice-listener.provisioningApi.auth.credentialSecret.name" -}}
-{{- if .Values.provisioningApi.auth.credentialSecret.name -}}
-{{- .Values.provisioningApi.auth.credentialSecret.name -}}
-{{- else if .Values.provisioningApi.auth.password -}}
-{{ printf "%s-api-credentials" (include "common.names.fullname" .) }}
-{{- else if .Values.global.nubusDeployment -}}
-{{- printf "%s-selfservice-listener-credentials" .Release.Name -}}
-{{- else -}}
-{{ required ".Values.provisioningApi.auth.password must be defined." .Values.provisioningApi.auth.password}}
-{{- end -}}
-{{- end -}}
-
-{{- define "selfservice-listener.provisioningApi.auth.password" -}}
-{{- if .Values.provisioningApi.auth.credentialSecret.name -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ .Values.provisioningApi.auth.credentialSecret.name | quote }}
-    key: {{ .Values.provisioningApi.auth.credentialSecret.key | quote }}
-{{- else if .Values.global.nubusDeployment -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ include "selfservice-listener.provisioningApi.auth.credentialSecret.name" . | quote }}
-    key: {{ .Values.provisioningApi.auth.credentialSecret.key | quote }}
-{{- else -}}
-value: {{ required ".Values.provisioningApi.auth.password is required." .Values.umc.auth.password | quote }}
-{{- end -}}
-{{- end -}}
