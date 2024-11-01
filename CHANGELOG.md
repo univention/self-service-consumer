@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.12.0...v0.12.1) (2024-11-01)
+
+
+### Bug Fixes
+
+* add digest to wait-for-dependency image tag ([39d0e9f](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/39d0e9f7d6464c2ae64e0bfb1ada1ba4be80a3a2))
+
 ## [0.12.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.11.3...v0.12.0) (2024-10-29)
 
 
