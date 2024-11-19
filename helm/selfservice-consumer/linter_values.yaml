@@ -17,3 +17,5 @@ umc:
     username: "username"
   connection:
     baseUrl: "http://test-umc-server"
+
+...
