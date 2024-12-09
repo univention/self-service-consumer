@@ -491,6 +491,24 @@ null
 			<td></td>
 		</tr>
 		<tr>
+			<td>resources</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>resourcesWaitForDependency</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>securityContext</td>
 			<td>object</td>
 			<td><pre lang="json">

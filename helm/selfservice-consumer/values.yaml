@@ -180,3 +180,7 @@ readinessProbe:
       - -c
       - |
         exit 0
+
+resources: {}
+
+resourcesWaitForDependency: {}
