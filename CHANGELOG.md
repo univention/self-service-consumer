@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.13.1...v0.14.0) (2025-02-26)
+
+
+### Features
+
+* Bump ucs-base-image to use released apt sources ([85c44ed](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/commit/85c44ed99cecdffd1617c08a1b551056985d1306))
+
 ## [0.13.1](https://git.knut.univention.de/univention/customers/dataport/upx/selfservice-listener/compare/v0.13.0...v0.13.1) (2025-02-10)
 
 
