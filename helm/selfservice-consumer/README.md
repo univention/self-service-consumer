@@ -18,7 +18,7 @@ user an email to set their password.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://gitregistry.knut.univention.de/univention/customers/dataport/upx/common-helm/helm | common | ^0.2.0 |
+| oci://artifacts.software-univention.de/nubus/charts | nubus-common | ^0.12.x |
 
 ## Values
 
@@ -631,7 +631,7 @@ true
 			<td>waitForDependency.image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"nubus/images/wait-for-dependency"
+"nubus-dev/images/wait-for-dependency"
 </pre>
 </td>
 			<td></td>
@@ -640,7 +640,7 @@ true
 			<td>waitForDependency.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"0.28.0@sha256:816ad27b76046be360398274ba3c1f1bcec8f58c2ea5a200b2fb675aab1a5ab8"
+"0.30.0-pre-jtorres-521-upgrade"
 </pre>
 </td>
 			<td></td>
