@@ -29,8 +29,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-ARG UCS_BASE_IMAGE_TAG=0.16.2-build-2025-04-24
-ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/components/ucs-base-image/ucs-base-521
+ARG UCS_BASE_IMAGE_TAG=0.17.3-build-2025-05-11
+ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-base-521
 
 ARG WORKDIR="/app"
 
