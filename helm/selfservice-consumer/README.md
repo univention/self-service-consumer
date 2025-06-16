@@ -18,7 +18,7 @@ user an email to set their password.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://artifacts.software-univention.de/nubus/charts | nubus-common | ^0.12.x |
+| oci://artifacts.software-univention.de/nubus/charts | nubus-common | 0.21.0 |
 
 ## Values
 
@@ -197,10 +197,10 @@ false
 			<td>Indicates wether this chart is part of a Nubus deployment.</td>
 		</tr>
 		<tr>
-			<td>image.imagePullPolicy</td>
+			<td>image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"IfNotPresent"
+""
 </pre>
 </td>
 			<td>The pull policy of the container image.  This setting has higher precedence than global.imagePullPolicy.</td>
@@ -610,10 +610,10 @@ true
 			<td>The base URL the UMC is reachable at. (e.g. "https://umc-server")</td>
 		</tr>
 		<tr>
-			<td>waitForDependency.image.imagePullPolicy</td>
+			<td>waitForDependency.image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"IfNotPresent"
+""
 </pre>
 </td>
 			<td></td>
