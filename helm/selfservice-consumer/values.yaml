@@ -121,7 +121,7 @@ umc:
   # -- Connection parameters
   connection:
     # -- The base URL the UMC is reachable at. (e.g. "https://umc-server")
-    baseUrl: ""
+    url: ""
 
 # Configuration for the communication with the provisioning API.
 provisioningApi:

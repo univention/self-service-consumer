@@ -7,9 +7,9 @@ provisioningApi:
     password: "linter-password"
   connection:
     url: "http://test-provisioning-api"
+
 umc:
   auth:
-    password: "password"
-    username: "username"
+    password: "linter-password"
   connection:
-    baseUrl: "http://test-umc-server"
+    url: "http://test-umc-server"
