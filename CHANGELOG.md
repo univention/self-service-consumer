@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.16.0...v0.16.1) (2025-06-23)
+
+
+### Bug Fixes
+
+* bump umc-base-image version ([af96882](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/af96882067e281f9ce62e02cf3d851d9fb659bd1)), closes [univention/dev/internal/team-nubus#1263](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1263)
+
 ## [0.16.0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.15.1...v0.16.0) (2025-05-11)
 
 
