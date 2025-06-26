@@ -5,5 +5,4 @@ from univention.testing.helm.client.umc import Connection
 
 
 class TestConnection(Connection):
-
     config_map_name = "release-name-selfservice-consumer-common"

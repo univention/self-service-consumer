@@ -164,7 +164,7 @@ true
 			<td>global.imagePullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"IfNotPresent"
+null
 </pre>
 </td>
 			<td>Define an ImagePullPolicy.  Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy  "IfNotPresent" => The image is pulled only if it is not already present locally. "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved             digest, and uses that image to launch the container. "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the            kubelet attempts to start the container; otherwise, startup fails.</td>
@@ -351,7 +351,8 @@ false
     },
     "name": null
   },
-  "username": null
+  "password": null,
+  "username": "selfservice"
 }
 </pre>
 </td>
@@ -372,10 +373,19 @@ false
 			<td>The name of the secret containing the password.</td>
 		</tr>
 		<tr>
-			<td>provisioningApi.auth.username</td>
+			<td>provisioningApi.auth.password</td>
 			<td>string</td>
 			<td><pre lang="json">
 null
+</pre>
+</td>
+			<td>The password to authenticate with.</td>
+		</tr>
+		<tr>
+			<td>provisioningApi.auth.username</td>
+			<td>string</td>
+			<td><pre lang="json">
+"selfservice"
 </pre>
 </td>
 			<td>The username to authenticate with.</td>
@@ -394,14 +404,14 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "baseUrl": ""
+  "url": ""
 }
 </pre>
 </td>
 			<td>Connection parameters</td>
 		</tr>
 		<tr>
-			<td>provisioningApi.connection.baseUrl</td>
+			<td>provisioningApi.connection.url</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
@@ -594,14 +604,14 @@ true
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "baseUrl": ""
+  "url": ""
 }
 </pre>
 </td>
 			<td>Connection parameters</td>
 		</tr>
 		<tr>
-			<td>umc.connection.baseUrl</td>
+			<td>umc.connection.url</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""

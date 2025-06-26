@@ -53,7 +53,6 @@ class TestAuthRegistrationUsername(AuthUsername):
 
 
 class TestConnection(Connection):
-
     config_map_name = "release-name-selfservice-consumer-common"
 
     path_provisioning_api_url = "data.PROVISIONING_API_BASE_URL"
