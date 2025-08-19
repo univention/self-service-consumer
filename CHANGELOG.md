@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.19.1](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.19.0...v0.19.1) (2025-08-19)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency univention/dev/nubus-for-k8s/common-ci to v1.44.0 Issue: [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0) ([f05979a](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/f05979ac4ec1a6e2e2363d54cefd18a4055ae89e))
+* **deps:** Update gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-base Docker tag to v5.2.2-build.20250814 ([7f5dd78](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/7f5dd78059e29d24380a0a95b6bafe2c1ce3fee9)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.19.0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.18.0...v0.19.0) (2025-07-18)
 
 
