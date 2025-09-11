@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: {{ coalesce .Values.waitForDependency.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           command: ["/bin/bash", "/scripts/wait-for-provisioning-api.sh"]
           resources:
-            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+            {{- toYaml .Values.initResources | nindent 12 }}
           volumeMounts:
             - name: scripts
               mountPath: /scripts

@@ -233,6 +233,15 @@ false
 			<td>The tag of the container image. (This is replaced with an appropriate value during the build process of the Helm chart.)</td>
 		</tr>
 		<tr>
+			<td>initResources</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Custom resource requests and limits for the init containers.</td>
+		</tr>
+		<tr>
 			<td>livenessProbe.exec.command[0]</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -502,15 +511,6 @@ null
 		</tr>
 		<tr>
 			<td>resources</td>
-			<td>object</td>
-			<td><pre lang="json">
-{}
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>resourcesWaitForDependency</td>
 			<td>object</td>
 			<td><pre lang="json">
 {}

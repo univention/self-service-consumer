@@ -182,4 +182,5 @@ readinessProbe:
 
 resources: {}
 
-resourcesWaitForDependency: {}
+# -- Custom resource requests and limits for the init containers.
+initResources: {}
