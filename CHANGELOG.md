@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.9](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.19.8...v0.19.9) (2025-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner Docker tag to v0.24.5 ([dba35a9](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/dba35a9e6377bf27a5a2080580f87bd2ef688f50)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.19.8](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.19.7...v0.19.8) (2025-09-11)
 
 
