@@ -38,7 +38,7 @@ container-sign-external:
 test-chart-selfservice-consumer:
   stage: test
   needs: []
-  image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.27.0"
+  image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.28.0-pre-dpapoutsis-nubus-common-templated-keymapping"
   script:
     - helm dep build helm/selfservice-consumer
     - pytest -W error tests/chart

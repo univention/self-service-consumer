@@ -7,7 +7,7 @@ name: "dev-local"
 services:
 
   test-chart:
-    image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.27.0"
+    image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.28.0-pre-dpapoutsis-nubus-common-templated-keymapping"
     pull_policy: "if_not_present"
     command: "pytest tests/chart"
     profiles:
