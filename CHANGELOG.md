@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.20](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.19.19...v0.19.20) (2025-10-17)
+
+
+### Bug Fixes
+
+* **secrets:** allow templated keymappings ([0fc8c8a](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/0fc8c8a9f24431a52fb9455c4396cfa4ffba3142)), closes [univention/dev/internal/team-nubus#1441](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1441)
+
 ## [0.19.19](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.19.18...v0.19.19) (2025-10-15)
 
 
