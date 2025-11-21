@@ -29,7 +29,7 @@ class SelfServiceConsumer:
     async def send_email(self, username: str) -> ClientResponse:
         session_kwargs = {
             "url": f"{self.settings.umc_server_url}/command/passwordreset/send_token",
-            "json": {"options": {"username": username, "method": "email"}},
+            "json": {"options": {"username": username, "method": "email", "is_invitation": True}},
         }
         async with (
             ClientSession(timeout=ClientTimeout(total=30)) as session,

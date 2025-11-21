@@ -225,7 +225,7 @@ async def test_send_email(
 
     mock_post_cm.assert_called_once_with(
         url=f"{selfservice_consumer_settings.umc_server_url}/command/passwordreset/send_token",
-        json={"options": {"username": USERNAME, "method": "email"}},
+        json={"options": {"username": USERNAME, "method": "email", "is_invitation": True}},
         auth=BasicAuth(
             selfservice_consumer_settings.umc_admin_user,
             selfservice_consumer_settings.umc_admin_password,
