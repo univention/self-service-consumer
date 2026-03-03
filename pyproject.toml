@@ -14,7 +14,7 @@ packages = [{ include = "invitation" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-aiohttp = "^3.8.5"
+aiohttp = "^3.11.0"
 anyio = "^4.3.0"
 nubus-provisioning-consumer = "0.42.0"
 pydantic = "^2.3.0"
