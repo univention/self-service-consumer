@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.5](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.4...v0.20.5) (2026-03-11)
+
+
+### Bug Fixes
+
+* Bump dependencies ([ba9721f](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/ba9721f784c905948cb543beb7f4b1dca3aa9979)), closes [univention/dev/internal/team-nubus#1477](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1477)
+
 ## [0.20.4](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.3...v0.20.4) (2026-02-25)
 
 
