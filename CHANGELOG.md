@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.6](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.5...v0.20.6) (2026-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update Base Image ([2e6917e](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/2e6917e6e9cd3d4ee5cc8f3945a4857088503eda)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.20.5](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.4...v0.20.5) (2026-03-11)
 
 
