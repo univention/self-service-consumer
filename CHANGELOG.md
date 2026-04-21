@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.9](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.8...v0.20.9) (2026-04-21)
+
+
+### Bug Fixes
+
+* **deps:** Update nubus/images/wait-for-dependency Docker tag to v0.36.10 ([d5bea84](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/d5bea8418e9eceb992b135f5fb70f6a3c08a2c40)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.20.8](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.20.7...v0.20.8) (2026-04-17)
 
 
