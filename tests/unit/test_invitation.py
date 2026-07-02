@@ -6,7 +6,6 @@ from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
-from aiohttp import BasicAuth
 
 from invitation.__main__ import start_consumer
 from invitation.config import SelfServiceConsumerSettings
@@ -95,8 +94,6 @@ def selfservice_consumer_settings() -> SelfServiceConsumerSettings:
         log_level="DEBUG",
         max_umc_request_retries=3,
         umc_server_url="http://foo.local",
-        umc_admin_user="user",
-        umc_admin_password="password",
     )
 
 
@@ -226,10 +223,6 @@ async def test_send_email(
     mock_post_cm.assert_called_once_with(
         url=f"{selfservice_consumer_settings.umc_server_url}/command/passwordreset/send_token",
         json={"options": {"username": USERNAME, "method": "email"}},
-        auth=BasicAuth(
-            selfservice_consumer_settings.umc_admin_user,
-            selfservice_consumer_settings.umc_admin_password,
-        ),
     )
     mock_post.__aenter__.assert_called_once()
 
