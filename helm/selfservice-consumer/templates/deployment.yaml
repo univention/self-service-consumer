@@ -94,12 +94,6 @@ spec:
           {{- end }}
           image: "{{ coalesce .Values.image.registry .Values.global.imageRegistry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ coalesce .Values.image.pullPolicy .Values.global.imagePullPolicy | quote }}
-          command:
-            - /bin/bash
-            - -c
-            - |
-              set -euxo pipefail
-              poetry run python3 -m invitation
           env:
             - name: PROVISIONING_API_PASSWORD
               valueFrom:
