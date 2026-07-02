@@ -38,8 +38,12 @@ async def start_consumer(
         await message_handler(client, [handler]).run()
 
 
-if __name__ == "__main__":
+def main() -> None:
     _settings = get_selfservice_consumer_settings()
     configure_logging(_settings.log_level)
     invitation = SelfServiceConsumer()
     asyncio.run(start_consumer(ProvisioningConsumerClient, MessageHandler, invitation.handle_user_event))
+
+
+if __name__ == "__main__":
+    main()

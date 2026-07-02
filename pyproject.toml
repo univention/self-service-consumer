@@ -1,40 +1,51 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 
-[tool.poetry]
+[project]
 name = "selfservice-listener"
 version = "0.1.0"
 description = "Univention Management Stack - Selfservice Listener"
-authors = [
-    "Univention GmbH <packages@univention.de>",
-]
-license = "GNU Affero General Public License v3"
 readme = "README.md"
-packages = [{ include = "invitation" }]
+authors = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+license = "AGPL-3.0-only"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp>=3.11.0",
+    "anyio>=4.3.0",
+    "nubus-provisioning-consumer==0.42.0",
+    "pydantic>=2.3.0",
+    "pydantic-settings>=2.0.3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-aiohttp = "^3.11.0"
-anyio = "^4.3.0"
-nubus-provisioning-consumer = "0.42.0"
-pydantic = "^2.3.0"
-pydantic-settings = "^2.0.3"
+[project.scripts]
+selfservice-listener = "invitation.__main__:main"
 
-[tool.poetry.group.dev]
-optional = true
+[dependency-groups]
+dev = [
+    "pytest>=7.4.2",
+    "pytest-cov>=4.1",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.2"
-pytest-cov = "4.1"
+[tool.uv]
+package = true
 
-[[tool.poetry.source]]
+[tool.uv.sources]
+nubus-provisioning-consumer = { index = "ucs" }
+
+[[tool.uv.index]]
 name = "ucs"
 url = "https://git.knut.univention.de/api/v4/projects/882/packages/pypi/simple"
-priority = "supplemental"
+explicit = true
+default = false
 
-[[tool.poetry.source]]
-name = "PyPI"
-priority = "primary"
+[tool.hatch.build.targets.wheel]
+packages = ["invitation"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 target-version = "py311"
@@ -45,7 +56,3 @@ extend-select = ["I"]  # activate isort
 
 [tool.ruff.lint.isort]
 known-first-party = ["univention"]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
