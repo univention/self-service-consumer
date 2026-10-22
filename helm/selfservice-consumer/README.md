@@ -245,7 +245,7 @@ false
 			<td>livenessProbe.exec.command[0]</td>
 			<td>string</td>
 			<td><pre lang="json">
-"sh"
+"python3.13"
 </pre>
 </td>
 			<td></td>
@@ -263,7 +263,7 @@ false
 			<td>livenessProbe.exec.command[2]</td>
 			<td>string</td>
 			<td><pre lang="json">
-"exit 0\n"
+"pass"
 </pre>
 </td>
 			<td></td>
@@ -432,7 +432,7 @@ null
 			<td>readinessProbe.exec.command[0]</td>
 			<td>string</td>
 			<td><pre lang="json">
-"sh"
+"python3.13"
 </pre>
 </td>
 			<td></td>
@@ -450,7 +450,7 @@ null
 			<td>readinessProbe.exec.command[2]</td>
 			<td>string</td>
 			<td><pre lang="json">
-"exit 0\n"
+"pass"
 </pre>
 </td>
 			<td></td>

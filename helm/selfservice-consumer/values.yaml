@@ -155,12 +155,13 @@ livenessProbe:
   successThreshold: 1
   # -- Timeout for command return.
   timeoutSeconds: 5
+  # Interpreter check only: the image has no shell. Does not check
+  # application health.
   exec:
     command:
-      - sh
+      - python3.13
       - -c
-      - |
-        exit 0
+      - "pass"
 
 readinessProbe:
   # -- Number of failed executions until container is terminated.
@@ -173,12 +174,13 @@ readinessProbe:
   successThreshold: 1
   # -- Timeout for command return.
   timeoutSeconds: 5
+  # Interpreter check only: the image has no shell. Does not check
+  # application health.
   exec:
     command:
-      - sh
+      - python3.13
       - -c
-      - |
-        exit 0
+      - "pass"
 
 resources: {}
 
