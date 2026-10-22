@@ -3,6 +3,8 @@
 
 ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-base-python
 ARG UCS_BASE_IMAGE_TAG=5.3.0-build.20261008@sha256:c50651cd92b620100d4a897f84e1a8976ad50915cd3ff2410c55288dab3b7246
+ARG UCS_DISTROLESS_IMAGE=gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-distroless-python
+ARG UCS_DISTROLESS_IMAGE_TAG=5.3.0-build.20260917@sha256:a965bfba1bb1af8cf0c47d6e436c8a37aaa26ed15b29c9b55636839b2b8436e3
 
 ###############################################
 # Stage 1: build dependencies and software
@@ -42,26 +44,20 @@ RUN uv sync \
 
 ###############################################
 # Stage 2: final image
-FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG} AS final
-SHELL ["/bin/bash", "-uxo", "pipefail", "-c"]
+#
+# Distroless: no shell, so every instruction here is exec form. The user and
+# the CA bundle come from the base image.
+FROM ${UCS_DISTROLESS_IMAGE}:${UCS_DISTROLESS_IMAGE_TAG} AS final
 
 ENV PYTHONUNBUFFERED=1 \
   PATH=/app/.venv/bin:$PATH
 
-ARG USER=selfservice
-RUN rm -fv /usr/lib/python*/EXTERNALLY-MANAGED && \
-  rm -fr /var/lib/apt/lists/* /var/cache/apt/archives/* && \
-  groupadd -r ${USER} -g 1000 && \
-  useradd -r -d /app -g ${USER} -N ${USER} -u 1000
+COPY --from=build /app/.venv /app/.venv
+COPY --from=build /app/requirements.txt /app/requirements.txt
 
-COPY --from=build --chown=${USER}:${USER} /app /app
-
-USER ${USER}
 WORKDIR /app
 
-CMD ["selfservice-listener"]
+# Runs in the shipped image, so a package missing from the venv fails the build and not the pod.
+RUN ["python3.13", "-c", "import invitation.__main__"]
 
-RUN \
-  python3.13 -V && \
-  python3.13 -m site && \
-  python3.13 -c 'import invitation'
+CMD ["selfservice-listener"]
