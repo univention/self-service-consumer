@@ -152,19 +152,6 @@ wheels = [
 ]
 
 [[package]]
-name = "anyio"
-version = "4.14.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "idna" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/3b/72/5562aabb8dd7181e8e860622a38bea08d17842b99ecd4c91f84ac95251b0/anyio-4.14.1.tar.gz", hash = "sha256:8d648a3544c1a700e3ff78615cd679e4c5c3f149904287e73687b2596963629e", size = 254831, upload-time = "2026-06-24T20:56:06.017Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/7b/90df4a0a816d98d6ea26f559d87836d494a2cf1fcf063be67df50a7bcc30/anyio-4.14.1-py3-none-any.whl", hash = "sha256:4e5533c5b8ff0a24f5d7a176cbe6877129cd183893f66b537f8f227d10527d72", size = 124875, upload-time = "2026-06-24T20:56:04.413Z" },
-]
-
-[[package]]
 name = "attrs"
 version = "26.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -907,7 +894,6 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },
-    { name = "anyio" },
     { name = "nubus-provisioning-consumer" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -922,7 +908,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.14.3" },
-    { name = "anyio", specifier = ">=4.3.0" },
     { name = "nubus-provisioning-consumer", specifier = "==0.42.0", index = "https://git.knut.univention.de/api/v4/projects/882/packages/pypi/simple" },
     { name = "pydantic", specifier = ">=2.3.0" },
     { name = "pydantic-settings", specifier = ">=2.0.3" },
