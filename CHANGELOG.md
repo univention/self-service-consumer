@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.2...v0.21.3) (2026-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update nubus-common Docker tag to v0.29.22 ([9bfe64e](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/9bfe64e737a741eecf555845b8442a5bed8cf9dc)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.21.2](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.1...v0.21.2) (2026-10-23)
 
 
