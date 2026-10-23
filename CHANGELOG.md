@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.4](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.3...v0.21.4) (2026-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Replace gitregistry.knut.univention.de/univention/dev/tooling/pre-commit/upx-pre-commit Docker tag with gitregistry.knut.univention.de/univention/dev/tooling/pre-commit/univention-pre-commit latest ([c0fb69e](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/c0fb69e1e7150e75ad149b22a171c194303c7b69)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/issues/0)
+
 ## [0.21.3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.2...v0.21.3) (2026-10-23)
 
 
