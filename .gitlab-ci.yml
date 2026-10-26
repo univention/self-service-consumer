@@ -5,7 +5,7 @@
 
 include:
   - project: "univention/dev/nubus-for-k8s/common-ci"
-    ref: "v1.69.1"
+    ref: "v1.69.2"
     file:
       - "defaults/stages.yaml"
       - "defaults/nubus-workflow.yaml"
@@ -16,6 +16,7 @@ include:
       - "jobs/package-and-publish-helm-charts-external.yaml"
       - "jobs/check-debian-updates.yaml"
       - "templates/sonarqube.yaml"
+  - component: "$CI_SERVER_FQDN/univention/dev/nubus-for-k8s/common-ci/vul-man@v1.69.2"
 
 .build-matrix: &build-matrix
   - IMAGE_NAME:
@@ -48,6 +49,10 @@ push-image-external:
     matrix: *build-matrix
 
 container-release-attestation:
+  parallel:
+    matrix: *build-matrix
+
+sbom-upload:
   parallel:
     matrix: *build-matrix
 
