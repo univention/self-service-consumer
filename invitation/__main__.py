@@ -3,6 +3,7 @@
 
 import asyncio
 import logging
+import signal
 import sys
 from importlib.metadata import version
 from typing import Awaitable, Callable
@@ -42,6 +43,8 @@ def main() -> None:
     _settings = get_selfservice_consumer_settings()
     configure_logging(_settings.log_level)
     invitation = SelfServiceConsumer()
+    # As PID 1 the process has no default SIGTERM handler, so Kubernetes would wait for SIGKILL.
+    signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(0))
     asyncio.run(start_consumer(ProvisioningConsumerClient, MessageHandler, invitation.handle_user_event))
 
 
