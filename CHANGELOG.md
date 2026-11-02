@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.7](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.6...v0.21.7) (2026-11-02)
+
+
+### Bug Fixes
+
+* **invitation:** exit on SIGTERM ([6005694](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/commit/60056941a673e6b82bc2a0c29bd8f01d119542c0)), closes [univention/dev/internal/team-nubus#1685](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1685)
+
 ## [0.21.6](https://git.knut.univention.de/univention/dev/nubus-for-k8s/self-service-consumer/compare/v0.21.5...v0.21.6) (2026-10-26)
 
 
