@@ -2,9 +2,9 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 
 ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-base-python
-ARG UCS_BASE_IMAGE_TAG=5.3.0-build.20261026@sha256:6eae72e522f58da1b0dce75f38eddc7ed725ec5fc235929abca8079256475eb5
+ARG UCS_BASE_IMAGE_TAG=5.3.0-build.20261112@sha256:25e5e183b1b4f75c64e0c697d5795a8e9c15b935453c2a64406d7d1ab40b2214
 ARG UCS_DISTROLESS_IMAGE=gitregistry.knut.univention.de/univention/dev/projects/ucs-base-image/ucs-distroless-python
-ARG UCS_DISTROLESS_IMAGE_TAG=5.3.0-build.20261026@sha256:f65cefc852c76dfd42ad0c1ad0f6885357e62899f51aa421b6f89eef550b97cf
+ARG UCS_DISTROLESS_IMAGE_TAG=5.3.0-build.20261112@sha256:c4766a3c4624d2173f1b39da3be5088c90e64564ce0fccf14f9106ee83fb422c
 
 ###############################################
 # Stage 1: build dependencies and software
